@@ -25,12 +25,4 @@ describe Board do
 
     expect(board.gameboard[4]).to eq('x')
   end
-
-  it 'responds with a message to the user if a space is taken' do
-    board.create
-    board.place_game_piece(4, 'x')
-    board.place_game_piece(4, 'o')
-
-    expect(board.io.messages).to eq(["Invalid selection. Please try again."])
-  end
 end
