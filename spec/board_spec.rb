@@ -6,16 +6,16 @@ describe Board do
 
   it 'displays the board' do
     board.gameboard = {
-      '1' => 'x', '2' => '', '3' => 'x',
-      '4' => '', '5' => 'o', '6' => '',
-      '7' => '', '8' => 'o', '9' => ''
+      '1' => 'x', '2' => '_', '3' => 'x',
+      '4' => '_', '5' => 'o', '6' => '_',
+      '7' => '_', '8' => 'o', '9' => '_'
     }
 
-    expect(board.display).to eq({
-      "1"=>"x", "2"=>"", "3"=>"x",
-      "4"=>"", "5"=>"o", "6"=>"",
-      "7"=>"", "8"=>"o", "9"=>""
-    })
+    board.display
+    expect(board.io.messages).to eq([
+      " ____________", "| x | _ | x |", " ____________",
+      "| _ | o | _ |", " ____________", "| _ | o | _ |"
+    ])
   end
 
   it 'fills space in available positions only' do
