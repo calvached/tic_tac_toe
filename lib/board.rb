@@ -1,11 +1,12 @@
 class Board
   attr_accessor :gameboard
-  attr_reader :io
+  attr_reader :io, :complete
 
   def initialize(grid_size, input_output)
     @io = input_output
     @grid_size = grid_size
     @gameboard = {}
+    @complete = false
   end
 
   def display
