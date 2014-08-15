@@ -20,17 +20,20 @@ class Board
     (grid_cells).each { |cell| @gameboard[cell] = '_' }
   end
 
-  def grid_cells
-    (1..(@grid_size**2))
-  end
-
   def place_game_piece(position, game_piece)
     if @gameboard[position] == '_'
       fill_space(position, game_piece)
     end
   end
 
+  private
+  def grid_cells
+    (1..(@grid_size**2))
+  end
+
   def fill_space(position, game_piece)
     @gameboard[position] = game_piece
   end
+
+  # Need to add winning pattern check
 end
