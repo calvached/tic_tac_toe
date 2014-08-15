@@ -17,7 +17,7 @@ describe Messages do
   end
 
   it 'displays instructions' do
-    message.instructions
+    message.how_to_play
 
     expect(message.io.messages).to include("# How to Play #")
   end
@@ -25,6 +25,6 @@ describe Messages do
   it 'displays an invalid option' do
     message.invalid_option
 
-    expect(message.io.messages).to include("Invalid selection. Please try again.")
+    expect(message.io.messages).to include("Invalid selection. Please try again or press 3 for help.")
   end
 end

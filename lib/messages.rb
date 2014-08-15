@@ -9,7 +9,9 @@ class Messages
 
   def welcome
     @io.out('###########################')
+    @io.out('#                         #')
     @io.out('# Welcome to Tic Tac Toe! #')
+    @io.out('#                         #')
     @io.out('###########################')
   end
 
@@ -20,7 +22,7 @@ class Messages
     @io.out('3. Help')
   end
 
-  def instructions
+  def how_to_play
     @io.out('###############')
     @io.out('# How to Play #')
     @io.out('###############')
@@ -32,6 +34,6 @@ class Messages
   end
 
   def invalid_option
-    @io.out('Invalid selection. Please try again.')
+    @io.out('Invalid selection. Please try again or press 3 for help.')
   end
 end
