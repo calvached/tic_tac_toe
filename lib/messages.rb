@@ -36,4 +36,12 @@ class Messages
   def invalid_option
     @io.out('Invalid selection. Please try again or press 3 for help.')
   end
+
+  def invalid_character
+    @io.out('Please input a valid numerical digit.')
+  end
+
+  def ask_for_board_size
+    @io.out("Please input the gameboard size (e.g. '3' for 3x3): ")
+  end
 end

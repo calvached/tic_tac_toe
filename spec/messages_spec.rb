@@ -27,4 +27,10 @@ describe Messages do
 
     expect(message.io.messages).to include("Invalid selection. Please try again or press 3 for help.")
   end
+
+  it 'asks for a board size' do
+    message.ask_for_board_size
+
+    expect(message.io.messages).to include("Please input the gameboard size (e.g. '3' for 3x3): ")
+  end
 end
