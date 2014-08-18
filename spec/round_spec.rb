@@ -1,26 +1,40 @@
 require 'round'
-require 'board'
 require 'input_output'
-require 'messages'
-require 'ai'
-require 'player'
 
 describe Round do
   let(:mock) { MockIO.new }
-  let(:ui_messages) { Messages.new(mock) }
-  let (:round) { Round.new(Board.new(3, mock), ui_messages, mock, AI.new, Player.new) }
+  let (:round) { Round.new(mock) }
 
-  it "selects an 'O' player" do
-    round.random_select_players
-    round.assign_game_pieces
+  it 'creates an AI player' do
+    round.create_ai_player
 
-    expect(round.o_player.game_piece).to eq('O')
+    expect(round.ai).to be_instance_of(AI)
   end
 
-  it "selects an 'X' player" do
-    round.random_select_players
-    round.assign_game_pieces
+  it 'creates a Human player' do
+    round.create_human_player
 
-    expect(round.x_player.game_piece).to eq('X')
+    expect(round.human).to be_instance_of(Human)
+  end
+
+  it "displays 'How to Play' instructions" do
+    round.io.inputs = ['1']
+    round.start_game
+
+    expect(round.io.messages).to include("# How to Play #")
+  end
+
+  it "displays options for the player to choose from" do
+    round.io.inputs = ['3']
+    round.start_game
+
+    expect(round.io.messages).to include("Please make a selection from the following: ")
+  end
+
+  it "displays an 'invalid selection' message if option not available" do
+    round.io.inputs = ['hey']
+    round.start_game
+
+    expect(round.io.messages).to include("Invalid selection. Please try again or press 3 for help.")
   end
 end

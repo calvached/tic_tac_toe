@@ -1,14 +1,17 @@
-class Round
-  attr_reader :message, :o_player, :x_player
+require 'board'
+require 'messages'
+require 'ai'
+require 'human'
 
-  def initialize(board, ui_messages, input_output, ai, player)
-    @board = board
-    @message = ui_messages
+class Round
+  attr_reader :human, :ai, :io
+
+  def initialize(input_output)
     @io = input_output
-    @ai = ai
-    @player = player
-    @o_player = nil
-    @x_player = nil
+    @board = Board.new
+    @message = Messages.new(@io)
+    @ai = nil
+    @human = nil
   end
 
   def start_game
@@ -30,22 +33,17 @@ class Round
   end
 
   def play
-    @board.create
-    random_select_players
-    assign_game_pieces
-
-    p @board.gameboard
-    @board.place_game_piece(1, 'x')
-    p @board.gameboard
+    @board.create(3)
+    create_human_player
+    create_ai_player
   end
 
-  def random_select_players
-    @o_player, @x_player = [@ai, @player].shuffle
+  def create_human_player
+    @human = Human.new('O', @io)
   end
 
-  def assign_game_pieces
-    @o_player.game_piece = 'O'
-    @x_player.game_piece = 'X'
+  def create_ai_player
+    @ai = AI.new('X')
   end
 end
 
