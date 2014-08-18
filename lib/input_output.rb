@@ -9,13 +9,16 @@ class MyIO
 end
 
 class MockIO
+  attr_accessor :inputs
   attr_reader :messages
 
   def initialize
+    @inputs = nil
     @messages = []
   end
 
   def in
+    @inputs.shift
   end
 
   def out(message)
