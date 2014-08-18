@@ -6,9 +6,9 @@ require 'human'
 class Round
   attr_reader :human, :ai, :io
 
-  def initialize(input_output)
+  def initialize(board, input_output)
     @io = input_output
-    @board = Board.new
+    @board = board
     @message = Messages.new(@io)
     @ai = nil
     @human = nil
