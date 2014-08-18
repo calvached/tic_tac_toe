@@ -1,9 +1,10 @@
 require 'round'
+require 'board'
 require 'input_output'
 
 describe Round do
   let(:mock) { MockIO.new }
-  let (:round) { Round.new(mock) }
+  let (:round) { Round.new(Board.new, mock) }
 
   it 'creates an AI player' do
     round.create_ai_player
@@ -18,23 +19,30 @@ describe Round do
   end
 
   it "displays 'How to Play' instructions" do
-    round.io.inputs = ['1']
+    round.io.inputs = ['1', '2', '3']
     round.start_game
 
     expect(round.io.messages).to include("# How to Play #")
   end
 
   it "displays options for the player to choose from" do
-    round.io.inputs = ['3']
+    round.io.inputs = ['3', '2', '3']
     round.start_game
 
     expect(round.io.messages).to include("Please make a selection from the following: ")
   end
 
   it "displays an 'invalid selection' message if option not available" do
-    round.io.inputs = ['hey']
+    round.io.inputs = ['hey', '2', '3']
     round.start_game
 
     expect(round.io.messages).to include("Invalid selection. Please try again or press 3 for help.")
+  end
+
+  it 'asks gameboard size input' do
+    round.io.inputs = ['2', '3']
+    round.start_game
+
+    expect(round.io.messages).to include("Please input the gameboard size (e.g. '3' for 3x3): ")
   end
 end
