@@ -2,13 +2,12 @@ class Board
   attr_accessor :gameboard
   attr_reader :io
 
-  def initialize(grid_size)
-    @grid_size = grid_size
+  def initialize
     @gameboard = {}
   end
 
-  def create
-    (grid_cells).each { |cell| @gameboard[cell] = '' }
+  def create(board_size)
+    (create_grid_cells(board_size)).each { |cell| @gameboard[cell] = '' }
   end
 
   def place_game_piece(position, game_piece)
@@ -20,8 +19,8 @@ class Board
   end
 
   private
-  def grid_cells
-    (1..(@grid_size**2))
+  def create_grid_cells(board_size)
+    (1..(board_size**2))
   end
 
   def fill_space(position, game_piece)

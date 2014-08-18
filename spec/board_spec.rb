@@ -2,10 +2,10 @@ require 'board'
 require 'input_output'
 
 describe Board do
-  let (:board) { Board.new(3) }
+  let (:board) { Board.new }
 
   before(:example) do
-    board.create
+    board.create(3)
   end
 
   it 'fills space in available positions only' do
