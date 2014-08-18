@@ -1,29 +1,22 @@
 class Board
   attr_accessor :gameboard
-  attr_reader :io, :complete
+  attr_reader :io
 
-  def initialize(grid_size, input_output)
-    @io = input_output
+  def initialize(grid_size)
     @grid_size = grid_size
     @gameboard = {}
-    @complete = false
-  end
-
-  def display
-    @gameboard.values.each_slice(@grid_size) do |row|
-      @io.out(" ____________")
-      @io.out("| #{row[0]} | #{row[1]} | #{row[2]} |")
-    end
   end
 
   def create
-    (grid_cells).each { |cell| @gameboard[cell] = '_' }
+    (grid_cells).each { |cell| @gameboard[cell] = '' }
   end
 
   def place_game_piece(position, game_piece)
-    if @gameboard[position] == '_'
-      fill_space(position, game_piece)
-    end
+    fill_space(position, game_piece) if @gameboard[position].empty?
+  end
+
+  def is_full?
+    !@gameboard.any? { |cell| cell[1].empty? }
   end
 
   private
