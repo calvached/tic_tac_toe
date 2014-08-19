@@ -22,7 +22,7 @@ describe Board do
   end
 
   it 'returns false if board is not completely filled' do
-    board.gameboard = {1=>"", 2=>"X", 3=>"", 4=>"", 5=>"", 6=>"X", 7=>"O", 8=>"X", 9=>"O"}
+    board.gameboard = {1=>" ", 2=>"X", 3=>"", 4=>"", 5=>"", 6=>"X", 7=>"O", 8=>"X", 9=>"O"}
 
     expect(board.is_full?).to eq(false)
   end

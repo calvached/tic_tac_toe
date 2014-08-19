@@ -1,6 +1,5 @@
 class Board
   attr_accessor :gameboard
-  attr_reader :io
 
   def initialize
     @gameboard = {}
