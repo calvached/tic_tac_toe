@@ -9,14 +9,21 @@ class Round
   def initialize(board, input_output)
     @io = input_output
     @board = board
-    @message = Messages.new(@io)
     @ai = nil
     @human = nil
   end
 
+  def menu
+  {
+    '1' => @io.out(Messages::HOW_TO_PLAY),
+    '2' => play,
+    '3' => @io.out(Messages::PLAYER_OPTIONS)
+  }
+  end
+
   def start_game
-    @message.welcome
-    @message.player_options
+    @io.out(Messages::WELCOME)
+    @io.out(Messages::PLAYER_OPTIONS)
 
     player_selections
   end
@@ -24,23 +31,16 @@ class Round
   def player_selections
     user_input = @io.in
 
-    case user_input
-    when '1'
-      @message.how_to_play
-      player_selections
-    when '2'
-      play
-    when '3'
-      @message.player_options
-      player_selections
+    if menu.keys.include?(user_input)
+      menu[user_input]
     else
-      @message.invalid_option
-      player_selections
+      @io.out(Messages::INVALID_OPTION)
     end
+
   end
 
   def play
-    @message.ask_for_board_size
+    @io.out(Messages::ASK_FOR_BOARD_SIZE)
     create_players if get_board_size
   end
 
@@ -50,7 +50,7 @@ class Round
     if board_size =~ /\d/
       @board.create(board_size.to_i)
     else
-      @message.invalid_character
+      @io.out(Messages::INVALID_CHARACTER)
       get_board_size
     end
   end
