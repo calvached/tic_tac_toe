@@ -18,13 +18,21 @@ class Board
     !@gameboard.any? { |cell| cell[1].empty? }
   end
 
+  def occupied_cells
+    @gameboard.reduce(0) { |counter, pair| empty_cell?(pair) ? counter + 1 : counter }
+  end
+
   private
   def create_grid_cells(board_size)
-    (1..(board_size**2))
+    ('1'.."#{board_size**2}").to_a
   end
 
   def fill_space(position, game_piece)
     @gameboard[position] = game_piece
+  end
+
+  def empty_cell?(pair)
+    !pair.last.empty?
   end
 
   # Need to add winning pattern check
