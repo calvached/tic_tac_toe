@@ -1,57 +1,98 @@
 require 'round'
+require 'ai'
+require 'human'
 require 'board'
 require 'input_output'
+require 'configurations'
+# rename file
 
 describe Round do
-  let(:mock) { MockIO.new }
-  let (:round) { Round.new(Board.new, mock) }
+  let(:mock) { MyIO.new }
+  let(:ai) { AI.new('X') }
+  let(:human) { Human.new('O', mock) }
+  let(:board) { Board.new }
+  let (:round) { Round.new(mock, Configurations.new) }
+  let (:game_settings) { { player_one: ai, player_two: human, board: board } }
 
-  it 'creates an AI player' do
-    round.io.inputs = ['1', '2', '3']
-    round.start_game
-
-    expect(round.ai).to be_instance_of(AI)
+  def make_board
+    round.game_settings = game_settings
+    board.create(3)
   end
 
-  it 'creates a Human player' do
-    round.io.inputs = ['2', '3', '3']
+  it "displays 'Welcome' and sets up a game" do
+    allow(round.io).to receive(:out).with(Messages::WELCOME)
+    allow(round.configurations).to receive(:setup).and_return(game_settings)
+
     round.start_game
 
-    expect(round.human).to be_instance_of(Human)
+    expect(round.player_one).to be_instance_of(AI)
+    expect(round.player_two).to be_instance_of(Human)
+    expect(round.board).to be_instance_of(Board)
   end
 
-  it "displays 'Welcome'" do
-    round.io.inputs = ['1', '2', '3']
-    round.start_game
+  it 'plays the game' do
+    allow(round.io).to receive(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).and_return('1')
+    allow(round.io).to receive(:out).with(Messages.prettify_board(board))
+    allow(board).to receive(:place_game_piece)
 
-    expect(round.io.messages).to include(Messages::WELCOME)
+    make_board
+    round.play
+
+    expect(round.io).to have_received(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/)
+    expect(round.io).to have_received(:out).with(Messages.prettify_board(board))
+    expect(round.board).to have_received(:place_game_piece).with('1', 'X')
   end
 
-  it "displays 'How to Play' instructions" do
-    round.io.inputs = ['1', '2', '3']
-    round.start_game
+  it 'finishes a round if winning combination is found' do
+    allow(board).to receive(:full?).and_return(false)
+    allow(board).to receive(:winner?).and_return(true)
 
-    expect(round.io.messages).to include(Messages::HOW_TO_PLAY)
+    make_board
+
+    expect(round.game_over?).to eq(true)
   end
 
-  it "displays options for the player to choose from" do
-    round.io.inputs = ['3', '2', '3']
-    round.start_game
+  it 'finishes a round if board is completely full' do
+    allow(board).to receive(:full?).and_return(true)
+    allow(board).to receive(:winner?).and_return(false)
 
-    expect(round.io.messages).to include(Messages::PLAYER_OPTIONS)
+    make_board
+
+    expect(round.game_over?).to eq(true)
   end
 
-  it "displays an 'invalid selection' message if option not available" do
-    round.io.inputs = ['hey', '2', '3']
-    round.start_game
+  it 'continues the game if no winner and board incomplete' do
+    allow(board).to receive(:full?).and_return(false)
+    allow(board).to receive(:winner?).and_return(false)
 
-    expect(round.io.messages).to include(Messages::INVALID_OPTION)
+    make_board
+
+    expect(round.game_over?).to eq(false)
   end
 
-  it 'asks gameboard size input' do
-    round.io.inputs = ['2', '3', '3']
-    round.start_game
+  it 'returns the current player for an even cell count' do
+    make_board
 
-    expect(round.io.messages).to include("Please input the gameboard size (e.g. '3' for 3x3): ")
+    expect(round.current_player).to be_instance_of(AI)
+  end
+
+  it 'returns the current player for an odd cell count' do
+    make_board
+    board.place_game_piece('1', 'X')
+
+    expect(round.current_player).to be_instance_of(Human)
   end
 end
+
+# XOX
+# XXO
+# OXO
+
+  # LOOP UNTIL GAME_OVER?
+  # END
+  #
+  # GAME_OVER?
+  # BOARD FULL/DRAW OR WINNER
+  # Display game_over_message
+  # Prompt Play_again?
+  # END

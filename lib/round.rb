@@ -4,13 +4,12 @@ require 'ai'
 require 'human'
 
 class Round
-  attr_reader :human, :ai, :io
+  attr_reader :human, :ai, :io, :configurations, :board
+  attr_accessor :game_settings
 
-  def initialize(board, input_output)
+  def initialize(input_output, configurations)
     @io = input_output
-    @board = board
-    @ai = nil
-    @human = nil
+    @configurations = configurations
   end
 
   def menu
@@ -23,9 +22,23 @@ class Round
 
   def start_game
     @io.out(Messages::WELCOME)
-    @io.out(Messages::PLAYER_OPTIONS)
+    @game_settings = @configurations.setup
+  end
 
-    player_selections
+  def player_one
+    @game_settings[:player_one]
+  end
+
+  def player_two
+    @game_settings[:player_two]
+  end
+
+  def board
+    @game_settings[:board]
+  end
+
+  def current_player
+    board.occupied_cells.even? ? player_one : player_two
   end
 
   def player_selections
@@ -40,8 +53,17 @@ class Round
   end
 
   def play
-    @io.out(Messages::ASK_FOR_BOARD_SIZE)
-    create_players if get_board_size
+    #until game_over?
+      successful_move = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
+      @io.out(Messages.prettify_board(board))
+      board.place_game_piece(successful_move, 'X')
+    #end
+
+    #mock out game_over? when testing loop
+  end
+
+  def game_over?
+    board.full? || board.winner?
   end
 
   def get_board_size
