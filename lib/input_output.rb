@@ -40,14 +40,14 @@ class MockIO
 
   def initialize
     @inputs = nil
-    @messages = []
+    @received_messages = []
   end
 
-  def in
+  def input
     @inputs.shift
   end
 
   def out(message)
-    @messages << message
+    @received_messages << message
   end
 end
