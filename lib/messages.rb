@@ -25,4 +25,10 @@ class Messages
   INVALID_CHARACTER = 'Please input a valid numerical digit.'
 
   ASK_FOR_BOARD_SIZE = "Please input the gameboard size (e.g. '3' for 3x3): "
+
+  MAKE_MOVE = "Please select a cell on the board: "
+
+  def self.prettify_board(board)
+    board
+  end
 end
