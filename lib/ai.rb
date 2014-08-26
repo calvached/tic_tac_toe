@@ -6,6 +6,6 @@ class AI
   end
 
   def make_move
-    rand(9)
+    "#{rand(9) + 1}"
   end
 end
