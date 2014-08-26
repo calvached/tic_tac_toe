@@ -4,14 +4,13 @@ require 'human'
 require 'board'
 require 'input_output'
 require 'configurations'
-# rename file
 
 describe Round do
-  let(:mock) { MyIO.new }
-  let(:ai) { AI.new('X') }
-  let(:human) { Human.new('O', mock) }
-  let(:board) { Board.new }
-  let (:round) { Round.new(mock, Configurations.new) }
+  let (:mock) { MyIO.new }
+  let (:ai) { AI.new('X') }
+  let (:human) { Human.new('O', mock) }
+  let (:board) { Board.new }
+  let (:round) { Round.new(mock, Configurations.new(mock)) }
   let (:game_settings) { { player_one: ai, player_two: human, board: board } }
 
   def make_board
@@ -96,3 +95,5 @@ end
   # Display game_over_message
   # Prompt Play_again?
   # END
+#
+# Configurations will be sending players already randomized

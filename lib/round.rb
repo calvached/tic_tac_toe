@@ -44,7 +44,7 @@ class Round
   def player_selections
     user_input = @io.in
 
-    if menu.keys.include?(user_input)
+    if menu[user_input]
       menu[user_input]
     else
       @io.out(Messages::INVALID_OPTION)
@@ -64,17 +64,6 @@ class Round
 
   def game_over?
     board.full? || board.winner?
-  end
-
-  def get_board_size
-    board_size = @io.in
-
-    if board_size =~ /\d/
-      @board.create(board_size.to_i)
-    else
-      @io.out(Messages::INVALID_CHARACTER)
-      get_board_size
-    end
   end
 
   def create_players
