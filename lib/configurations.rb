@@ -13,13 +13,30 @@ class Configurations
 
   def setup
     create_board
-    # figure out a way to have player choose human v human, ai v human, ai v ai
-    shuffle_player_order(AI.new('X'), Human.new('O', @io))
+    create_players
 
     settings = { player_one: @player_one, player_two: @player_two, board: @board }
   end
 
   private
+  def create_players
+    @io.out(Messages::ASK_FOR_GAME_TYPE)
+    shuffle_player_order(challenger, Human.new('O', @io))
+  end
+
+  def challenger
+    user_input = @io.input
+
+    if user_input == 'H'
+      Human.new('X', @io)
+    elsif user_input == 'A'
+      AI.new('X')
+    else
+      @io.out(Messages::INVALID_RESPONSE)
+      challenger
+    end
+  end
+
   def create_board
     @io.out(Messages::ASK_FOR_BOARD_SIZE)
     get_board_size
