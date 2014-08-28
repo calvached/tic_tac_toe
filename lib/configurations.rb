@@ -15,26 +15,37 @@ class Configurations
     create_board
     create_players
 
+    #mock out shuffle_player_order to assert against the game loop
+
     settings = { player_one: @player_one, player_two: @player_two, board: @board }
   end
 
   private
   def create_players
     @io.out(Messages::ASK_FOR_GAME_TYPE)
-    shuffle_player_order(challenger, Human.new('O', @io))
+    shuffle_player_order(determine_challenger, Human.new('O', @io))
   end
 
-  def challenger
+  def determine_challenger
     user_input = @io.input
 
-    if user_input == 'H'
-      Human.new('X', @io)
-    elsif user_input == 'A'
-      AI.new('X')
+    if user_input.upcase == 'H'
+      create_human
+    elsif user_input.upcase == 'A'
+      # possibly ask 'easy' or 'hard'
+      create_easy_ai
     else
       @io.out(Messages::INVALID_RESPONSE)
-      challenger
+      determine_challenger
     end
+  end
+
+  def create_human
+    Human.new('X', @io)
+  end
+
+  def create_easy_ai
+    AI.new('X')
   end
 
   def create_board
@@ -58,11 +69,5 @@ class Configurations
   end
 end
 
-# Config = [Human, AI, Board]
-
 #Round only cares about Human, AI and Board
 #Configuration does the rest of the set up (board size, ai difficulty, player names, etc)
-# Display message
-# Get config.game_settings
-# Save setting as value in hash
-# will send instances of Board, Human, and AI back to Round

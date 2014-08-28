@@ -36,12 +36,12 @@ describe Configurations do
   it 'returns a Human opponent' do
     allow(config.io).to receive(:input).and_return('H')
 
-    p config.send(:challenger)
+    expect(config.send(:determine_challenger)).to be_a_kind_of(Human)
   end
 
-  xit 'returns an AI opponent' do
+  it 'returns an AI opponent' do
     allow(config.io).to receive(:input).and_return('A')
 
-    p config.send(:challenger)
+    expect(config.send(:determine_challenger)).to be_a_kind_of(AI)
   end
 end
