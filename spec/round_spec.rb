@@ -10,7 +10,7 @@ describe Round do
   let (:ai) { AI.new('X') }
   let (:human) { Human.new('O', mock) }
   let (:board) { Board.new }
-  let (:round) { Round.new(mock, Configurations.new(mock)) }
+  let (:round) { Round.new(Configurations.new(mock), mock) }
   let (:game_settings) { { player_one: ai, player_two: human, board: board } }
 
   def make_board
@@ -18,9 +18,13 @@ describe Round do
     board.create(3)
   end
 
-  it "displays 'Welcome' and sets up a game" do
+  it "sets up a game with players and a board" do
     allow(round.io).to receive(:out).with(Messages::WELCOME)
     allow(round.configurations).to receive(:setup).and_return(game_settings)
+    allow(round.menu).to receive(:call)
+    allow(round.io).to receive(:out).with(Messages::PLAYER_OPTIONS)
+    allow(round.io).to receive(:input).and_return('4')
+    allow(round.io).to receive(:out).with(Messages::QUIT)
 
     round.start_game
 
@@ -43,7 +47,7 @@ describe Round do
   end
 
   it 'finishes a round if winning combination is found' do
-    allow(board).to receive(:full?).and_return(false)
+    allow(board).to receive(:is_full?).and_return(false)
     allow(board).to receive(:winner?).and_return(true)
 
     make_board
@@ -52,7 +56,7 @@ describe Round do
   end
 
   it 'finishes a round if board is completely full' do
-    allow(board).to receive(:full?).and_return(true)
+    allow(board).to receive(:is_full?).and_return(true)
     allow(board).to receive(:winner?).and_return(false)
 
     make_board
@@ -61,7 +65,7 @@ describe Round do
   end
 
   it 'continues the game if no winner and board incomplete' do
-    allow(board).to receive(:full?).and_return(false)
+    allow(board).to receive(:is_full?).and_return(false)
     allow(board).to receive(:winner?).and_return(false)
 
     make_board
@@ -95,5 +99,3 @@ end
   # Display game_over_message
   # Prompt Play_again?
   # END
-#
-# Configurations will be sending players already randomized
