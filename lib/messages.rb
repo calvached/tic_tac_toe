@@ -22,11 +22,13 @@ class Messages
 
   INVALID_OPTION = 'Invalid selection. Please try again or press 3 for help.'
 
-  INVALID_CHARACTER = 'Please input a valid numerical digit.'
+  INVALID_RESPONSE = 'Please input a valid response.'
 
   ASK_FOR_BOARD_SIZE = "Please input the gameboard size (e.g. '3' for 3x3): "
 
   MAKE_MOVE = "Please select a cell on the board: "
+
+  ASK_FOR_GAME_TYPE = "Would you like to play against a human or AI? Enter 'H' for Human and 'A' for AI"
 
   def self.prettify_board(board)
     board

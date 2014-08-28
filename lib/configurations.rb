@@ -52,7 +52,7 @@ class Configurations
     if board_size =~ /\d/
       @board.create(board_size.to_i)
     else
-      @io.out(Messages::INVALID_CHARACTER)
+      @io.out(Messages::INVALID_RESPONSE)
       get_board_size
     end
   end
