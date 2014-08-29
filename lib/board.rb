@@ -18,6 +18,35 @@ class Board
     !@gameboard.any? { |cell| cell[1].empty? }
   end
 
+  def winner?
+    # need to find look for a winning combo in row, column, and diagonal
+  end
+
+  def get_rows
+    @gameboard.values.each_slice(3).to_a
+  end
+
+  def get_columns
+    get_rows.transpose
+  end
+
+  def get_diagonals
+    [left_diagonal, right_diagonal]
+  end
+
+  def left_diagonal
+    (0..get_rows.length - 1).collect { |i| get_rows[i][i] }
+  end
+
+  def right_diagonal
+    index = get_rows.length
+
+    (0..get_rows.length - 1).collect do |i|
+      index -= 1
+      get_rows[i][index]
+    end
+  end
+
   def occupied_cells
     @gameboard.reduce(0) { |counter, pair| empty_cell?(pair) ? counter + 1 : counter }
   end

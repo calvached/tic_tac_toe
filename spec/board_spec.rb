@@ -33,4 +33,47 @@ describe Board do
 
     expect(board.occupied_cells).to eq(2)
   end
+
+  it 'returns a winner if three of a kind in a row' do
+    board.gameboard
+  end
+
+  it "returns 3 sets of rows" do
+    board.gameboard = {
+      '1'=>"O", '2'=>"X", '3'=>"O",
+      '4'=>"", '5'=>"", '6'=>"O",
+      '7'=>"X", '8'=>"", '9'=>"X"}
+
+    expect(board.get_rows).to eq([
+      ["O", "X", "O"],
+      ["", "", "O"],
+      ["X", "", "X"]
+    ])
+  end
+
+  it "returns 3 sets of columns" do
+    board.gameboard = {
+      '1'=>"O", '2'=>"X", '3'=>"O",
+      '4'=>"O", '5'=>"", '6'=>"O",
+      '7'=>"O", '8'=>"", '9'=>"X"
+    }
+
+    expect(board.get_columns).to eq([
+      ["O", "O", "O"],
+      ["X", "", ""],
+      ["O", "O", "X"]
+    ])
+  end
+
+  it "returns 2 sets of diagonals" do
+    board.gameboard = {
+      '1'=>"", '2'=>"X", '3'=>"O",
+      '4'=>"", '5'=>"O", '6'=>"X",
+      '7'=>"O", '8'=>"", '9'=>"X"
+    }
+
+    expect(board.get_diagonals).to eq([
+      ["", "O", "X"],
+      ["O", "O", "O"]])
+  end
 end
