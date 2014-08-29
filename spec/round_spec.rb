@@ -34,16 +34,19 @@ describe Round do
   end
 
   it 'plays the game' do
-    allow(round.io).to receive(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).and_return('1')
+    allow(round).to receive(:game_over?).and_return(false, false, false, true)
     allow(round.io).to receive(:out).with(Messages.prettify_board(board))
+    allow(round.io).to receive(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).and_return('1', '2', '3', '4')
     allow(board).to receive(:place_game_piece)
 
     make_board
+
     round.play
 
-    expect(round.io).to have_received(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/)
-    expect(round.io).to have_received(:out).with(Messages.prettify_board(board))
+    expect(round.io).to have_received(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).exactly(3)
+    expect(round.io).to have_received(:out).with(Messages.prettify_board(board)).exactly(3)
     expect(round.board).to have_received(:place_game_piece).with('1', 'X')
+
   end
 
   it 'finishes a round if winning combination is found' do

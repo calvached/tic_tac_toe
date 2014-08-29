@@ -45,11 +45,12 @@ class Round
   end
 
   def play
-    #until game_over?
-      successful_move = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
+    until game_over?
+    # Tests go on an endless loop
       @io.out(Messages.prettify_board(board))
+      successful_move = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
       board.place_game_piece(successful_move, 'X')
-    #end
+    end
 
     #mock out game_over? when testing loop
   end
