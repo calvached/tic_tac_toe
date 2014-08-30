@@ -15,7 +15,7 @@ class Board
   end
 
   def is_full?
-    !@gameboard.any? { |cell| cell[1].empty? }
+    !@gameboard.values.any? { |cell| cell == ' ' }
   end
 
   def occupied_cells
@@ -76,6 +76,4 @@ class Board
   def filled_cell?(pair)
     pair.last != ' '
   end
-
-  # Need to add winning pattern check
 end
