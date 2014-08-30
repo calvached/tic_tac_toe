@@ -15,8 +15,6 @@ class Configurations
     create_board
     create_players
 
-    #mock out shuffle_player_order to assert against the game loop
-
     settings = { player_one: @player_one, player_two: @player_two, board: @board }
   end
 
@@ -68,6 +66,3 @@ class Configurations
     end
   end
 end
-
-#Round only cares about Human, AI and Board
-#Configuration does the rest of the set up (board size, ai difficulty, player names, etc)
