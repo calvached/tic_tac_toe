@@ -27,6 +27,7 @@ describe Round do
     allow(round.io).to receive(:out).with(Messages::QUIT)
 
     round.start_game
+    make_board
 
     expect(round.player_one).to be_instance_of(AI)
     expect(round.player_two).to be_instance_of(Human)
@@ -35,16 +36,22 @@ describe Round do
 
   it 'plays the game' do
     allow(round).to receive(:game_over?).and_return(false, false, false, true)
-    allow(round.io).to receive(:out).with(Messages.prettify_board(board))
-    allow(round.io).to receive(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).and_return('1', '2', '3', '4')
-    allow(board).to receive(:place_game_piece)
 
     make_board
+    board.gameboard = {
+      '1'=>"O", '2'=>"X", '3'=>"O",
+      '4'=>"X", '5'=>"O", '6'=>"X",
+      '7'=>"O", '8'=>"X", '9'=>"O"
+    }
+
+    allow(round).to receive(:print_board)
+    allow(round.io).to receive(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).and_return('1', '2', '3', '4')
+    allow(board).to receive(:place_game_piece)
 
     round.play
 
     expect(round.io).to have_received(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).exactly(3)
-    expect(round.io).to have_received(:out).with(Messages.prettify_board(board)).exactly(3)
+    expect(round).to have_received(:print_board).exactly(3)
     expect(round.board).to have_received(:place_game_piece).with('1', 'X')
 
   end
@@ -89,10 +96,6 @@ describe Round do
     expect(round.current_player).to be_instance_of(Human)
   end
 end
-
-# XOX
-# XXO
-# OXO
 
   # LOOP UNTIL GAME_OVER?
   # END

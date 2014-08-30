@@ -46,13 +46,16 @@ class Round
 
   def play
     until game_over?
-    # Tests go on an endless loop
-      @io.out(Messages.prettify_board(board))
+      print_board
       successful_move = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
       board.place_game_piece(successful_move, 'X')
     end
+  end
 
-    #mock out game_over? when testing loop
+  def print_board
+    board.gameboard.values.each_slice(board.dimensions) do |row|
+      @io.out(Messages.prettify_board(row))
+    end
   end
 
   def player_one
