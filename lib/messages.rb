@@ -33,7 +33,7 @@ class Messages
 
   ASK_FOR_GAME_TYPE = "Would you like to play against a human or AI? Enter 'H' for Human and 'A' for AI"
 
-  def self.prettify_board(board)
-    board
+  def self.prettify_board(row)
+    row.join(' | ') + "\n" + "____" * row.length
   end
 end
