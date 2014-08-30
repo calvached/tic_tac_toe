@@ -18,12 +18,28 @@ class Board
     !@gameboard.any? { |cell| cell[1].empty? }
   end
 
+  def occupied_cells
+    @gameboard.reduce(0) { |counter, pair| empty_cell?(pair) ? counter + 1 : counter }
+  end
+
   def winner?
-    # need to find look for a winning combo in row, column, and diagonal
+    possible_combinations.each do |combo_set|
+      return true if combo_set.uniq.length == 1 && !combo_set.include?(' ')
+    end
+
+    false
+  end
+
+  def possible_combinations
+    get_rows + get_columns + get_diagonals
   end
 
   def get_rows
-    @gameboard.values.each_slice(3).to_a
+    @gameboard.values.each_slice(dimensions).to_a
+  end
+
+  def dimensions
+    Math.sqrt(@gameboard.length)
   end
 
   def get_columns
@@ -47,11 +63,6 @@ class Board
     end
   end
 
-  def occupied_cells
-    @gameboard.reduce(0) { |counter, pair| empty_cell?(pair) ? counter + 1 : counter }
-  end
-
-  private
   def create_grid_cells(board_size)
     ('1'.."#{board_size**2}").to_a
   end
