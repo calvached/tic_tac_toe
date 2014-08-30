@@ -7,11 +7,11 @@ class Board
   end
 
   def create(board_size)
-    (create_grid_cells(board_size)).each { |cell| @gameboard[cell] = '' }
+    (create_grid_cells(board_size)).each { |cell| @gameboard[cell] = ' ' }
   end
 
   def place_game_piece(position, game_piece)
-    fill_space(position, game_piece) if @gameboard[position].empty?
+    fill_space(position, game_piece) if @gameboard[position] == ' '
   end
 
   def is_full?
@@ -19,7 +19,9 @@ class Board
   end
 
   def occupied_cells
-    @gameboard.reduce(0) { |counter, pair| empty_cell?(pair) ? counter + 1 : counter }
+    @gameboard.reduce(0) do |counter, pair|
+      filled_cell?(pair) ? counter + 1 : counter
+    end
   end
 
   def winner?
@@ -55,11 +57,11 @@ class Board
   end
 
   def right_diagonal
-    index = get_rows.length
+    cell_index = get_rows.length
 
     (0..get_rows.length - 1).collect do |i|
-      index -= 1
-      get_rows[i][index]
+      cell_index -= 1
+      get_rows[i][cell_index]
     end
   end
 
@@ -71,8 +73,8 @@ class Board
     @gameboard[position] = game_piece
   end
 
-  def empty_cell?(pair)
-    !pair.last.empty?
+  def filled_cell?(pair)
+    pair.last != ' '
   end
 
   # Need to add winning pattern check
