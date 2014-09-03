@@ -44,7 +44,7 @@ class Round
   end
 
   def play
-    until game_over?
+    until board.game_over?
       @io.out(Messages.print_header(current_player))
       print_board
 
@@ -88,7 +88,7 @@ class Round
   end
 
   def round_outcome
-    if board.is_full? && !board.winner?
+    if board.draw?
       @io.out(Messages::DRAW)
     else
       @io.out(Messages.print_round_win(declared_winner))
@@ -97,9 +97,5 @@ class Round
 
   def declared_winner
     board.occupied_cells.odd? ? player_one : player_two
-  end
-
-  def game_over?
-    board.is_full? || board.winner?
   end
 end

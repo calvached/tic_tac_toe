@@ -35,7 +35,7 @@ describe Round do
   end
 
   it 'plays the game' do
-    allow(round).to receive(:game_over?).and_return(false, false, false, true)
+    allow(board).to receive(:game_over?).and_return(false, false, false, true)
 
     make_board
     board.gameboard = {
@@ -54,33 +54,6 @@ describe Round do
     expect(round).to have_received(:print_board).exactly(4)
     expect(round.board).to have_received(:place_game_piece).with('1', 'O')
 
-  end
-
-  it 'finishes a round if winning combination is found' do
-    allow(board).to receive(:is_full?).and_return(false)
-    allow(board).to receive(:winner?).and_return(true)
-
-    make_board
-
-    expect(round.game_over?).to eq(true)
-  end
-
-  it 'finishes a round if board is completely full' do
-    allow(board).to receive(:is_full?).and_return(true)
-    allow(board).to receive(:winner?).and_return(false)
-
-    make_board
-
-    expect(round.game_over?).to eq(true)
-  end
-
-  it 'continues the game if no winner and board incomplete' do
-    allow(board).to receive(:is_full?).and_return(false)
-    allow(board).to receive(:winner?).and_return(false)
-
-    make_board
-
-    expect(round.game_over?).to eq(false)
   end
 
   it 'returns the current player for an even cell count' do
