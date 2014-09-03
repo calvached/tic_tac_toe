@@ -12,16 +12,25 @@ class Configurations
   end
 
   def setup
-    create_board
     create_players
+    create_board
 
     settings = { player_one: @player_one, player_two: @player_two, board: @board }
   end
 
   private
   def create_players
+    human = create_human
     @io.out(Messages::ASK_FOR_GAME_TYPE)
-    shuffle_player_order(determine_challenger, Human.new('O', @io))
+
+    shuffle_order(determine_challenger, human)
+  end
+
+  def create_human
+    name = @io.prompt(Messages::ASK_FOR_NAME, 'regex',/\w/ )
+    game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', /[O$%&*@#?]/)
+
+    Human.new(game_piece, name, @io)
   end
 
   def determine_challenger
@@ -38,10 +47,6 @@ class Configurations
     end
   end
 
-  def create_human
-    Human.new('X', @io)
-  end
-
   def create_easy_ai
     AI.new('X')
   end
@@ -51,7 +56,7 @@ class Configurations
     get_board_size
   end
 
-  def shuffle_player_order(contestant_1, contestant_2)
+  def shuffle_order(contestant_1, contestant_2)
     @player_one, @player_two = [contestant_1, contestant_2].shuffle
   end
 

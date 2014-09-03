@@ -32,16 +32,4 @@ describe Configurations do
 
     expect(config.setup[:board]).to be_an_instance_of(Board)
   end
-
-  it 'returns a Human opponent' do
-    allow(config.io).to receive(:input).and_return('H')
-
-    expect(config.send(:determine_challenger)).to be_a_kind_of(Human)
-  end
-
-  it 'returns an AI opponent' do
-    allow(config.io).to receive(:input).and_return('A')
-
-    expect(config.send(:determine_challenger)).to be_a_kind_of(AI)
-  end
 end
