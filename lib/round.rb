@@ -9,33 +9,35 @@ class Round
     @configurations = configurations
   end
 
-  def menu
-    {
-      '1' => Proc.new{@io.out(Messages::HOW_TO_PLAY)},
-      '2' => Proc.new{play},
-      '3' => Proc.new{@io.out(Messages::PLAYER_OPTIONS)},
-      '4' => Proc.new{@io.out(Messages::QUIT)}
-    }
-  end
-
   def start_game
     @io.out(Messages::WELCOME)
     @game_settings = @configurations.setup
 
-    menu['3'].call
+    menu['options'].call
     player_selections
+  end
+
+  def menu
+    {
+      '1' => Proc.new{@io.out(Messages::HOW_TO_PLAY)},
+      '2' => Proc.new{play},
+      '3' => Proc.new{@io.out(Messages::QUIT)},
+      'options' => Proc.new{@io.out(Messages::PLAYER_OPTIONS)}
+    }
   end
 
   def player_selections
     user_input = @io.input
 
-    if user_input == '4'
-      menu['4'].call
+    if user_input == '3'
+      menu['3'].call
     elsif menu[user_input]
       menu[user_input].call
+      menu['options'].call
       player_selections
     else
       @io.out(Messages::INVALID_OPTION)
+      menu['options'].call
       player_selections
     end
 
@@ -43,10 +45,24 @@ class Round
 
   def play
     until game_over?
+      @io.out(Messages.print_header(current_player))
       print_board
-      successful_move = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
-      board.place_game_piece(successful_move, 'X')
+
+      unless board.place_game_piece(player_move, game_piece)
+        @io.out(Messages::INVALID_MOVE)
+      end
     end
+
+    print_board
+    round_outcome
+  end
+
+  def player_move
+    current_player.make_move
+  end
+
+  def game_piece
+    current_player.game_piece
   end
 
   def print_board
