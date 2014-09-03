@@ -29,6 +29,7 @@ class MyIO
     if input =~ validation
       input
     else
+      out(Messages::INVALID_RESPONSE)
       prompt(message, validation_type, validation)
     end
   end
@@ -49,5 +50,10 @@ class MockIO
 
   def out(message)
     @received_messages << message
+  end
+
+  def prompt(message, validation_type, validation)
+    @received_messages << message
+    @inputs.shift
   end
 end
