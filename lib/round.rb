@@ -1,7 +1,4 @@
-require 'board'
 require 'messages'
-require 'ai'
-require 'human'
 
 class Round
   attr_reader :human, :ai, :io, :configurations, :board

@@ -96,12 +96,3 @@ describe Round do
     expect(round.current_player).to be_instance_of(Human)
   end
 end
-
-  # LOOP UNTIL GAME_OVER?
-  # END
-  #
-  # GAME_OVER?
-  # BOARD FULL/DRAW OR WINNER
-  # Display game_over_message
-  # Prompt Play_again?
-  # END
