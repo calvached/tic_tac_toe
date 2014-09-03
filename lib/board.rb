@@ -13,14 +13,23 @@ class Board
     fill_space(position, game_piece) if @gameboard[position] == ' '
   end
 
-  def is_full?
-    !@gameboard.values.any? { |cell| cell == ' ' }
-  end
-
   def occupied_cells
     @gameboard.reduce(0) do |counter, pair|
       filled_cell?(pair) ? counter + 1 : counter
     end
+  end
+
+  def game_over?
+    is_full? || winner?
+  end
+
+  def draw?
+    is_full? && !winner?
+  end
+
+  private
+  def is_full?
+    !@gameboard.values.any? { |cell| cell == ' ' }
   end
 
   def winner?

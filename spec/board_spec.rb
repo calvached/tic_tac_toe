@@ -8,96 +8,74 @@ describe Board do
     board.create(3)
   end
 
-  it 'fills space in available positions only' do
-    board.place_game_piece('4', 'x')
-    board.place_game_piece('4', 'o')
+  describe '#place_game_piece' do
+    it 'fills space in available positions only' do
+      board.place_game_piece('4', 'x')
+      board.place_game_piece('4', 'o')
 
-    expect(board.gameboard['4']).to eq('x')
+      expect(board.gameboard['4']).to eq('x')
+    end
   end
 
-  it 'returns true if board is completely filled' do
-    board.gameboard = {
-      '1'=>"O", '2'=>"X", '3'=>"O",
-      '4'=>"X", '5'=>"O", '6'=>"X",
-      '7'=>"O", '8'=>"X", '9'=>"O"
-    }
+  describe '#game_over?' do
+    it 'finishes a round if winning combination is found' do
+      allow(board).to receive(:is_full?).and_return(false)
+      allow(board).to receive(:winner?).and_return(true)
 
-    expect(board.is_full?).to eq(true)
+      expect(board.game_over?).to eq(true)
+    end
+
+    it 'finishes a round if board is completely full' do
+      allow(board).to receive(:is_full?).and_return(true)
+      allow(board).to receive(:winner?).and_return(false)
+
+      expect(board.game_over?).to eq(true)
+    end
+
+    it 'continues the game if no winner and board incomplete' do
+      allow(board).to receive(:is_full?).and_return(false)
+      allow(board).to receive(:winner?).and_return(false)
+
+      expect(board.game_over?).to eq(false)
+    end
   end
 
-  it 'returns false if board is not completely filled' do
-    board.gameboard = {
-      '1'=>"O", '2'=>"X", '3'=>" ",
-      '4'=>" ", '5'=>" ", '6'=>"X",
-      '7'=>"O", '8'=>" ", '9'=>"O"
-    }
+  describe '#draw?' do
+    it 'declares a draw if board is full and no winner' do
+      allow(board).to receive(:is_full?).and_return(true)
+      allow(board).to receive(:winner?).and_return(false)
 
-    expect(board.is_full?).to eq(false)
+      expect(board.draw?).to eq(true)
+    end
+
+    it 'is not a draw if there is a winner' do
+      allow(board).to receive(:is_full?).and_return(true)
+      allow(board).to receive(:winner?).and_return(true)
+
+      expect(board.draw?).to eq(false)
+    end
+
+    it 'is not a draw if the board is not full' do
+      allow(board).to receive(:is_full?).and_return(false)
+      allow(board).to receive(:winner?).and_return(true)
+
+      expect(board.draw?).to eq(false)
+    end
+
+    it 'is not a draw if the board is not full' do
+      allow(board).to receive(:is_full?).and_return(false)
+      allow(board).to receive(:winner?).and_return(false)
+
+      expect(board.draw?).to eq(false)
+    end
   end
 
-  it 'returns the number of cells occupied' do
-    board.place_game_piece('4', 'x')
-    board.place_game_piece('5', 'o')
+  describe '#occupied_cells' do
+    it 'returns the number of cells occupied' do
+      board.place_game_piece('4', 'x')
+      board.place_game_piece('5', 'o')
 
-    expect(board.occupied_cells).to eq(2)
-  end
-
-  it 'returns true if a winning pattern is found' do
-    board.gameboard = {
-      '1'=>"X", '2'=>" ", '3'=>"X",
-      '4'=>" ", '5'=>" ", '6'=>"X",
-      '7'=>"O", '8'=>"O", '9'=>"O"
-    }
-
-    expect(board.winner?).to eq(true)
-  end
-
-  it 'returns false if a winning pattern is not found' do
-    board.gameboard = {
-      '1'=>"X", '2'=>" ", '3'=>"X",
-      '4'=>" ", '5'=>" ", '6'=>"X",
-      '7'=>"O", '8'=>" ", '9'=>"O"
-    }
-
-    expect(board.winner?).to eq(false)
-  end
-
-  it "returns 3 sets of rows" do
-    board.gameboard = {
-      '1'=>"O", '2'=>"X", '3'=>"O",
-      '4'=>" ", '5'=>" ", '6'=>"O",
-      '7'=>"X", '8'=>" ", '9'=>"X"}
-
-    expect(board.get_rows).to eq([
-      ["O", "X", "O"],
-      [" ", " ", "O"],
-      ["X", " ", "X"]
-    ])
-  end
-
-  it "returns 3 sets of columns" do
-    board.gameboard = {
-      '1'=>"O", '2'=>"X", '3'=>"O",
-      '4'=>"O", '5'=>" ", '6'=>"O",
-      '7'=>"O", '8'=>" ", '9'=>"X"
-    }
-
-    expect(board.get_columns).to eq([
-      ["O", "O", "O"],
-      ["X", " ", " "],
-      ["O", "O", "X"]
-    ])
-  end
-
-  it "returns 2 sets of diagonals" do
-    board.gameboard = {
-      '1'=>" ", '2'=>"X", '3'=>"O",
-      '4'=>" ", '5'=>"O", '6'=>"X",
-      '7'=>"O", '8'=>" ", '9'=>"X"
-    }
-
-    expect(board.get_diagonals).to eq([
-      [" ", "O", "X"],
-      ["O", "O", "O"]])
+      expect(board.occupied_cells).to eq(2)
+    end
   end
 end
