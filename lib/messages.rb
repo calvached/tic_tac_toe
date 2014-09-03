@@ -18,7 +18,14 @@ class Messages
     "each will take turns placing a piece on the board.\n" +
     "The objective of the game is to fill in three of a kind in\n" +
     "a row, column, or diagonal. The first to accomplish this wins the game.\n" +
-    "If neither player is declared a winner then the game ends in a draw.\n"
+    "If neither player is declared a winner then the game ends in a draw.\n" +
+    "\n" +
+    "In order to place a game piece on the board you must select a number from 1-9.\n" +
+    " 1 | 2 | 3 \n" +
+    "-----------\n" +
+    " 4 | 5 | 6 \n" +
+    "-----------\n" +
+    " 7 | 8 | 9 \n"
 
   INVALID_OPTION = "Invalid selection."
 
@@ -41,7 +48,7 @@ class Messages
   DRAW = "DRAW!"
 
   def self.prettify_board(row)
-    row.join(' | ') + "\n" + "____" * row.length
+    row.join(' | ') + "\n" + "----" * row.length
   end
 
   def self.print_header(player)
