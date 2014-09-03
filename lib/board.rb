@@ -19,6 +19,10 @@ class Board
     end
   end
 
+  def available_cells
+    @gameboard.select { |key, value| value == ' '}.keys
+  end
+
   def game_over?
     is_full? || winner?
   end

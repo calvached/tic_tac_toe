@@ -78,4 +78,16 @@ describe Board do
       expect(board.occupied_cells).to eq(2)
     end
   end
+
+  describe '#available_cells' do
+    it 'returns the keys to all available cells' do
+      board.gameboard = {
+        '1' => 'X', '2' => 'O', '3' => ' ',
+        '4' => 'X', '5' => ' ', '6' => ' ',
+        '7' => ' ', '8' => ' ', '9' => 'O'
+      }
+
+      expect(board.available_cells).to eq(['3', '5', '6', '7', '8'])
+    end
+  end
 end
