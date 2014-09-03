@@ -17,7 +17,7 @@ rspec -c
 ```
 
 ## Game Instructions
-Each player is assigned a game piece of either 'O' or 'X' after which each will take turns placing a piece on the board. The objective of the game is to fill in three of a kind in a row, column, or diagonal. The first to accomplish this wins the game. If neither player is declared a winner then the game ends in a draw.
+Each player is assigned a game piece after which each will take turns placing a piece on the board. The objective of the game is to fill in three of a kind in a row, column, or diagonal. The first to accomplish this wins the game. If neither player is declared a winner then the game ends in a draw.
 
 ## Contributing
 1. Fork it
