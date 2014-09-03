@@ -87,12 +87,19 @@ class Round
     board.occupied_cells.even? ? player_one : player_two
   end
 
+  def round_outcome
+    if board.is_full? && !board.winner?
+      @io.out(Messages::DRAW)
+    else
+      @io.out(Messages.print_round_win(declared_winner))
+    end
+  end
+
+  def declared_winner
+    board.occupied_cells.odd? ? player_one : player_two
+  end
+
   def game_over?
     board.is_full? || board.winner?
   end
 end
-
-# if place_game_piece
-    # successful move
-# else
-    # Need to try again. Invalid move

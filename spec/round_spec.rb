@@ -6,9 +6,9 @@ require 'input_output'
 require 'configurations'
 
 describe Round do
-  let (:mock) { MyIO.new }
+  let (:mock) { MockIO.new }
   let (:ai) { AI.new('X') }
-  let (:human) { Human.new('O', mock) }
+  let (:human) { Human.new('O', 'Diana', mock) }
   let (:board) { Board.new }
   let (:round) { Round.new(Configurations.new(mock), mock) }
   let (:game_settings) { { player_one: ai, player_two: human, board: board } }
@@ -23,7 +23,7 @@ describe Round do
     allow(round.configurations).to receive(:setup).and_return(game_settings)
     allow(round.menu).to receive(:call)
     allow(round.io).to receive(:out).with(Messages::PLAYER_OPTIONS)
-    allow(round.io).to receive(:input).and_return('4')
+    allow(round.io).to receive(:input).and_return('3')
     allow(round.io).to receive(:out).with(Messages::QUIT)
 
     round.start_game
@@ -51,8 +51,8 @@ describe Round do
     round.play
 
     expect(round.io).to have_received(:prompt).with(Messages::MAKE_MOVE, 'regex', /\d/).exactly(3)
-    expect(round).to have_received(:print_board).exactly(3)
-    expect(round.board).to have_received(:place_game_piece).with('1', 'X')
+    expect(round).to have_received(:print_board).exactly(4)
+    expect(round.board).to have_received(:place_game_piece).with('1', 'O')
 
   end
 
