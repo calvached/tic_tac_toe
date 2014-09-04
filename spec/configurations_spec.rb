@@ -4,32 +4,14 @@ require 'input_output'
 describe Configurations do
   let(:config) { Configurations.new(MockIO.new) }
 
-  it 'creates game_settings' do
-    allow(config.io).to receive(:input).and_return('3')
-    allow(config).to receive(:create_players)
+  it 'creates game settings' do
+    config.io.inputs = ['diana', 'O', 'a', '3']
+    game_settings = config.setup
 
-    expect(config.setup).to be_kind_of(Hash)
-    expect(config.setup.length).to eq(3)
-  end
-
-  it 'creates Player One' do
-    allow(config.io).to receive(:input).and_return('3')
-    allow(config).to receive(:create_players)
-
-    expect(config.setup[:player_one]).to be_a_kind_of(Object)
-  end
-
-  it 'creates Player Two' do
-    allow(config.io).to receive(:input).and_return('3')
-    allow(config).to receive(:create_players)
-
-    expect(config.setup[:player_two]).to be_a_kind_of(Object)
-  end
-
-  it 'creates a Board' do
-    allow(config.io).to receive(:input).and_return('3')
-    allow(config).to receive(:create_players)
-
-    expect(config.setup[:board]).to be_an_instance_of(Board)
+    expect(game_settings[:player_one].name).to be_a_kind_of(String)
+    expect(game_settings[:player_one].game_piece).to be_a_kind_of(String)
+    expect(game_settings[:player_two].name).to be_a_kind_of(String)
+    expect(game_settings[:player_two].game_piece).to be_a_kind_of(String)
+    expect(game_settings[:board]).to be_an_instance_of(Board)
   end
 end

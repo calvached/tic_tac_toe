@@ -21,7 +21,6 @@ class Configurations
   private
   def create_players
     human = create_human
-    @io.out(Messages::ASK_FOR_GAME_TYPE)
 
     shuffle_order(determine_challenger, human)
   end
@@ -34,6 +33,7 @@ class Configurations
   end
 
   def determine_challenger
+    @io.out(Messages::ASK_FOR_GAME_TYPE)
     user_input = @io.input
 
     if user_input.upcase == 'H'
