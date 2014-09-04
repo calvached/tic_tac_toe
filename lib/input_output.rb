@@ -37,7 +37,7 @@ end
 
 class MockIO
   attr_accessor :inputs
-  attr_reader :messages
+  attr_reader :received_messages
 
   def initialize
     @inputs = nil
