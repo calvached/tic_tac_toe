@@ -90,4 +90,10 @@ describe Board do
       expect(board.available_cells).to eq(['3', '5', '6', '7', '8'])
     end
   end
+
+  describe '#dimensions' do
+    it 'returns the board dimensions' do
+      expect(board.dimensions).to eq(3.0)
+    end
+  end
 end

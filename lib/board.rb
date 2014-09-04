@@ -31,6 +31,10 @@ class Board
     is_full? && !winner?
   end
 
+  def dimensions
+    Math.sqrt(@gameboard.length)
+  end
+
   private
   def is_full?
     !@gameboard.values.any? { |cell| cell == ' ' }
@@ -50,10 +54,6 @@ class Board
 
   def get_rows
     @gameboard.values.each_slice(dimensions).to_a
-  end
-
-  def dimensions
-    Math.sqrt(@gameboard.length)
   end
 
   def get_columns
