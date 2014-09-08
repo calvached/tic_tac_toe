@@ -66,9 +66,20 @@ class Round
   end
 
   def print_board
+    @io.out(formatted_rows.join(horizontal_line) + "\n")
+  end
+
+  def horizontal_line
+    "----" * board.dimensions + "\n"
+  end
+
+  def formatted_rows
+    rows = []
+
     board.gameboard.values.each_slice(board.dimensions) do |row|
-      @io.out(Messages.prettify_board(row))
+      rows << Messages.prettify_row(row)
     end
+    rows
   end
 
   def player_one

@@ -47,8 +47,8 @@ class Messages
 
   DRAW = "DRAW!"
 
-  def self.prettify_board(row)
-    row.join(' | ') + "\n" + "----" * row.length
+  def self.prettify_row(row)
+    " " + row.join(' | ') + "\n"
   end
 
   def self.print_header(player)
