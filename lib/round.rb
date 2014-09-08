@@ -48,7 +48,7 @@ class Round
       @io.out(Messages.print_header(current_player))
       print_board
 
-      unless board.place_game_piece(player_move, game_piece)
+      unless board.place_game_piece(player_move(board), game_piece)
         @io.out(Messages::INVALID_MOVE)
       end
     end
@@ -57,8 +57,8 @@ class Round
     round_outcome
   end
 
-  def player_move
-    current_player.make_move
+  def player_move(board)
+    current_player.make_move(board)
   end
 
   def game_piece
