@@ -78,4 +78,19 @@ describe Round do
 
     expect(round.io.received_messages).to include(Messages::DRAW)
   end
+
+  it "outputs an 'Invalid Response' message if player inputs a number that is greater than the board size" do
+    board.gameboard = {
+        '1' => 'X', '2' => 'O', '3' => 'X',
+        '4' => 'X', '5' => 'O', '6' => ' ',
+        '7' => 'O', '8' => 'X', '9' => 'X'
+      }
+
+    allow(round.configurations).to receive(:setup).and_return(game_settings)
+
+    round.io.inputs = ['2', '99', '6', '3']
+    round.start_game
+
+    expect(round.io.received_messages).to include(Messages::INVALID_RESPONSE)
+  end
 end
