@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'input_output'
 
 describe MyIO do

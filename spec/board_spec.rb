@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'board'
 require 'input_output'
 

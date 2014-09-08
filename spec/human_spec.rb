@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'human'
 require 'input_output'
 

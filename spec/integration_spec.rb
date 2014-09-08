@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'round'
 require 'configurations'
 require 'input_output'
