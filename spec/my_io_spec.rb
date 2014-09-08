@@ -9,11 +9,6 @@ describe MyIO do
   let (:message_3) { 'Please input a cell number: ' }
   let (:io) { MyIO.new }
 
-  #def cell_exists?(input)
-  #  board = { '1' => '', '2' => '', '3' => '' }
-  #  board.keys.include?(input)
-  #end
-
   before(:example) do
     allow(io).to receive(:out)
   end
@@ -36,20 +31,4 @@ describe MyIO do
     expect(io.prompt(message_2, 'regex',/\d/)).to eq('1')
   end
 
-  xit 'prompts user for input until method is satisfied' do
-    allow(io).to receive(:input).and_return('d', '4', '-1', '1')
-
-    expect(io.prompt(message_2, 'method', Round::cell_exists?)).to eq('1')
-  end
 end
-
-# def a(x,y)
-#        x + y
-#           end
-#
-#    def x(b)
-#           send(b,3,4)
-#              end
-#
-#       puts x(:a)  # 7
-#
