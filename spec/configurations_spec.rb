@@ -51,9 +51,15 @@ describe Configurations do
   end
 
   it "creates a Human player if 'h' is selected" do
-    config.io.inputs = ['diana', '4', 'O', 'a', '3']
+    config.io.inputs = ['diana', 'O', 'h', 'ruby', '#', '3']
     game_settings = config.setup
 
-    expect(game_settings.values).to include(Human)
+    expect(game_settings[:player_one]).to be_an_instance_of(Human)
+    expect(game_settings[:player_one].name).to be_a_kind_of(String)
+    expect(game_settings[:player_one].game_piece).to be_a_kind_of(String)
+
+    expect(game_settings[:player_two]).to be_an_instance_of(Human)
+    expect(game_settings[:player_two].name).to be_a_kind_of(String)
+    expect(game_settings[:player_two].game_piece).to be_a_kind_of(String)
   end
 end
