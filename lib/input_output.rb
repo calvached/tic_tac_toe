@@ -4,7 +4,7 @@ class MyIO
   end
 
   def out(message)
-    puts message
+    puts "\n" + message
   end
 
   def prompt(message, validation_type, validation)
