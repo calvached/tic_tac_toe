@@ -6,6 +6,9 @@ require 'ai'
 class Configurations
   attr_reader :io
 
+  HUMAN_OPTION = 'H'
+  AI_OPTION = 'A'
+
   def initialize(input_output)
     @board = Board.new
     @io = input_output
@@ -15,10 +18,14 @@ class Configurations
     create_players
     create_board
 
-    settings = { player_one: @player_one, player_two: @player_two, board: @board }
+    settings
   end
 
   private
+  def settings
+    { player_one: @player_one, player_two: @player_two, board: @board }
+  end
+
   def create_players
     human = create_human
 
@@ -26,19 +33,27 @@ class Configurations
   end
 
   def create_human
-    name = @io.prompt(Messages::ASK_FOR_NAME, 'regex',/\w/ )
-    game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', /[O$%&*@#?]/)
+    name = @io.prompt(Messages::ASK_FOR_NAME, 'regex', word_char_only)
+    game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', special_char_only)
 
     Human.new(game_piece, name, @io)
+  end
+
+  def special_char_only
+    /[O$%&*@#?]/
+  end
+
+  def word_char_only
+    /\w/
   end
 
   def determine_challenger
     @io.out(Messages::ASK_FOR_GAME_TYPE)
     user_input = @io.input
 
-    if user_input.upcase == 'H'
+    if user_input.upcase == HUMAN_OPTION
       create_human
-    elsif user_input.upcase == 'A'
+    elsif user_input.upcase == AI_OPTION
       # possibly ask 'easy' or 'hard'
       create_easy_ai
     else
@@ -63,11 +78,15 @@ class Configurations
   def get_board_size
     board_size = @io.input
 
-    if board_size =~ /\d/
+    if board_size =~ digit?
       @board.create(board_size.to_i)
     else
       @io.out(Messages::INVALID_RESPONSE)
       get_board_size
     end
+  end
+
+  def digit?
+    /\d/
   end
 end
