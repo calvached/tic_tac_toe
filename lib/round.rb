@@ -45,10 +45,9 @@ class Round
 
   def play
     until rules.game_over?
-      @io.out(Messages.print_header(current_player))
       print_board
 
-      unless board.place_game_piece(player_move(board), game_piece)
+      unless board.place_game_piece(successful_move, game_piece)
         @io.out(Messages::INVALID_MOVE)
       end
     end
@@ -57,15 +56,29 @@ class Round
     outcome
   end
 
-  def player_move(board)
-    current_player.make_move(board, self)
+  def successful_move
+    move = player_move
+    return move if rules.valid_entry?(move)
+
+    @io.out(Messages::INVALID_RESPONSE)
+    print_board
+    successful_move
+  end
+
+  def player_move
+    current_player.make_move
   end
 
   def game_piece
     current_player.game_piece
   end
 
+  def current_player
+    rules.current_player
+  end
+
   def print_board
+    @io.out(Messages.print_header(current_player))
     @io.out(formatted_rows.join(horizontal_line) + "\n")
   end
 
@@ -98,19 +111,11 @@ class Round
     @game_settings[:rules]
   end
 
-  def current_player
-    board.even_occupied_cells? ? player_one : player_two
-  end
-
   def outcome
     if rules.draw?
       @io.out(Messages::DRAW)
     else
-      @io.out(Messages.print_round_win(declared_winner))
+      @io.out(Messages.print_round_win(rules.declared_winner))
     end
-  end
-
-  def declared_winner
-    board.odd_occupied_cells? ? player_one : player_two
   end
 end
