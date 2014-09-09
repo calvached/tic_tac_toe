@@ -16,14 +16,15 @@ describe Round do
   let (:board) { Board.new }
   let (:round) { Round.new(Configurations.new(mock), mock) }
   let (:human) { Human.new('O', 'diana', mock) }
-  let (:ai) { AI.new('X') }
-  let (:rules) { GameRules.new(human, ai, board) }
+  let (:easy_ai) { EasyAI.new('X', board) }
+  let (:rules) { GameRules.new }
   let (:game_settings) {{ player_one: human,
-                          player_two: ai,
+                          player_two: easy_ai,
                           board: board,
                           rules: rules }}
 
   it 'plays the game and displays the winner' do
+    rules.setup(human, easy_ai, board)
     board.gameboard = {
         '1' => 'X', '2' => 'O', '3' => ' ',
         '4' => 'O', '5' => ' ', '6' => ' ',
@@ -39,6 +40,7 @@ describe Round do
   end
 
   it "displays a 'How to Play' message if player selects the option" do
+    rules.setup(human, easy_ai, board)
     board.gameboard = {
         '1' => 'X', '2' => 'O', '3' => ' ',
         '4' => 'O', '5' => ' ', '6' => ' ',
@@ -54,6 +56,7 @@ describe Round do
   end
 
   it "displays an 'Invalid Option' message if player selects an unavailable option" do
+    rules.setup(human, easy_ai, board)
     board.gameboard = {
         '1' => 'X', '2' => 'O', '3' => ' ',
         '4' => 'O', '5' => ' ', '6' => ' ',
@@ -69,6 +72,7 @@ describe Round do
   end
 
   it "plays the game and displays 'Draw' if tie game" do
+    rules.setup(human, easy_ai, board)
     board.gameboard = {
         '1' => 'X', '2' => 'O', '3' => 'X',
         '4' => 'X', '5' => 'O', '6' => ' ',
@@ -84,6 +88,7 @@ describe Round do
   end
 
   it "outputs an 'Invalid Response' message if player inputs a number that is greater than the board size" do
+    rules.setup(human, easy_ai, board)
     board.gameboard = {
         '1' => 'X', '2' => 'O', '3' => 'X',
         '4' => 'X', '5' => 'O', '6' => ' ',
@@ -96,5 +101,21 @@ describe Round do
     round.start_game
 
     expect(round.io.received_messages).to include(Messages::INVALID_RESPONSE)
+  end
+
+  it "outputs an 'Invalid Move' message if player inputs a number that already has a game piece" do
+    rules.setup(human, easy_ai, board)
+    board.gameboard = {
+        '1' => 'X', '2' => 'O', '3' => 'X',
+        '4' => 'X', '5' => 'O', '6' => ' ',
+        '7' => 'O', '8' => 'X', '9' => 'X'
+      }
+
+    allow(round.configurations).to receive(:setup).and_return(game_settings)
+
+    round.io.inputs = ['2', '1', '6', '3']
+    round.start_game
+
+    expect(round.io.received_messages).to include(Messages::INVALID_MOVE)
   end
 end
