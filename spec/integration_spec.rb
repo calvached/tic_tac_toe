@@ -8,6 +8,7 @@ require 'ai'
 require 'human'
 require 'board'
 require 'messages'
+require 'game_rules'
 
 describe Round do
   let (:mock) { MockIO.new }
@@ -15,9 +16,11 @@ describe Round do
   let (:round) { Round.new(Configurations.new(mock), mock) }
   let (:human) { Human.new('O', 'diana', mock) }
   let (:ai) { AI.new('X') }
+  let (:rules) { GameRules.new(human, ai, board) }
   let (:game_settings) {{ player_one: human,
                           player_two: ai,
-                          board: board }}
+                          board: board,
+                          rules: rules }}
 
   it 'plays the game and displays the winner' do
     board.gameboard = {

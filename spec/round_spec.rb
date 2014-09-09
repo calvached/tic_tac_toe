@@ -7,6 +7,7 @@ require 'human'
 require 'board'
 require 'input_output'
 require 'configurations'
+require 'game_rules'
 
 describe Round do
   let (:mock) { MockIO.new }
@@ -14,7 +15,11 @@ describe Round do
   let (:human) { Human.new('O', 'Diana', mock) }
   let (:board) { Board.new }
   let (:round) { Round.new(Configurations.new(mock), mock) }
-  let (:game_settings) { { player_one: ai, player_two: human, board: board } }
+  let (:rules) { GameRules.new(ai, human, board) }
+  let (:game_settings) {{ player_one: ai,
+                           player_two: human,
+                           board: board,
+                           rules: rules }}
 
   def make_board
     round.game_settings = game_settings
@@ -38,7 +43,7 @@ describe Round do
   end
 
   it 'plays the game' do
-    allow(board).to receive(:game_over?).and_return(false, false, false, true)
+    allow(rules).to receive(:game_over?).and_return(false, false, false, true)
 
     make_board
     board.gameboard = {
