@@ -39,7 +39,7 @@ class Messages
 
   INVALID_MOVE= "That space is already taken. Please choose again."
 
-  ASK_FOR_GAME_TYPE = "Would you like to play against a human or AI? Enter 'H' for Human and 'A' for AI"
+  ASK_FOR_GAME_TYPE = "Enter 'H' for Human, 'EA' for Easy Challenger and 'HA' for Hard Challenger."
 
   ASK_FOR_NAME = 'What is your name? (Use only letters and numbers)'
 
