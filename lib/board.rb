@@ -29,16 +29,16 @@ class Board
     !@gameboard.values.any? { |cell| cell == ' ' }
   end
 
-  def winner?
-    possible_combinations.each do |combo_set|
-      return true if combo_set.uniq.length == 1 && !combo_set.include?(' ')
-    end
-
-    false
+  def possible_combinations
+    get_rows + get_columns + get_diagonals
   end
 
   def dimensions
     Math.sqrt(@gameboard.length)
+  end
+
+  def reset(cell)
+    @gameboard[cell] = ' '
   end
 
   private
@@ -46,10 +46,6 @@ class Board
     @gameboard.reduce(0) do |counter, pair|
       filled_cell?(pair) ? counter + 1 : counter
     end
-  end
-
-  def possible_combinations
-    get_rows + get_columns + get_diagonals
   end
 
   def get_rows
