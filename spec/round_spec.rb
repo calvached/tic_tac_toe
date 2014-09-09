@@ -2,7 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'round'
-require 'ai'
+require 'easy_ai'
 require 'human'
 require 'board'
 require 'input_output'
