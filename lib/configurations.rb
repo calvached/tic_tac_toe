@@ -2,6 +2,7 @@ require 'messages'
 require 'board'
 require 'human'
 require 'ai'
+require 'game_rules'
 
 class Configurations
   attr_reader :io
@@ -23,13 +24,19 @@ class Configurations
 
   private
   def settings
-    { player_one: @player_one, player_two: @player_two, board: @board }
+    { player_one: @player_one, player_two: @player_two, board: @board, rules: rules }
+  end
+
+  def rules
+    GameRules.new(@player_one, @player_two, @board)
   end
 
   def create_players
     human = create_human
+    challenger = determine_challenger
+    # need to make sure challenger does not choose the same gamepiece as human
 
-    shuffle_order(determine_challenger, human)
+    shuffle_order(challenger, human)
   end
 
   def create_human
