@@ -6,12 +6,10 @@ require 'input_output'
 
 describe Configurations do
   let(:mock) { MockIO.new }
-  let(:human) { Human.new('O', 'diana', mock) }
-  let(:ai) { AI.new('X') }
   let(:config) { Configurations.new(mock) }
 
   it 'creates game settings' do
-    config.io.inputs = ['diana', 'O', 'a', '3']
+    config.io.inputs = ['3', 'diana', 'O', 'ea']
     #allow(config).to receive(:shuffle_order).with(ai, human)
 
     # mock out the shuffling so that I know exactly what is being returned
@@ -26,10 +24,11 @@ describe Configurations do
     expect(game_settings[:player_two].game_piece).to be_a_kind_of(String)
     expect(game_settings[:board]).to be_an_instance_of(Board)
     expect(game_settings[:board].gameboard.size).to eq(9)
+    expect(game_settings[:rules]).to be_an_instance_of(GameRules)
   end
 
   it "won't accept a letter for board size" do
-    config.io.inputs = ['diana', 'O', 'a', 'b', '3']
+    config.io.inputs = ['b', '3', 'diana', 'O', 'ea']
 
     game_settings = config.setup
 
@@ -37,21 +36,21 @@ describe Configurations do
   end
 
   it "will only accept special characters as game pieces" do
-    config.io.inputs = ['diana', '4', 'O', 'a', '3']
+    config.io.inputs = ['3', 'diana', '4', 'O', 'ea']
     game_settings = config.setup
 
     expect(config.io.received_messages).to include(Messages::INVALID_RESPONSE)
   end
 
   it "creates an AI player if 'a' is selected" do
-    config.io.inputs = ['diana', '4', 'O', 'a', '3']
+    config.io.inputs = ['3', 'diana', '4', 'O', 'ea']
     game_settings = config.setup
 
-    expect(game_settings.values).to include(AI)
+    expect(game_settings.values).to include(EasyAI)
   end
 
   it "creates a Human player if 'h' is selected" do
-    config.io.inputs = ['diana', 'O', 'h', 'ruby', '#', '3']
+    config.io.inputs = ['3', 'diana', 'O', 'h', 'ruby', '#']
     game_settings = config.setup
 
     expect(game_settings[:player_one]).to be_an_instance_of(Human)

@@ -1,34 +1,34 @@
 require 'messages'
 require 'board'
 require 'human'
-require 'ai'
+require 'easy_ai'
+require 'hard_ai'
 require 'game_rules'
 
 class Configurations
   attr_reader :io
 
   HUMAN_OPTION = 'H'
-  AI_OPTION = 'A'
+  EASY_AI_OPTION = 'EA'
+  HARD_AI_OPTION = 'HA'
 
   def initialize(input_output)
     @board = Board.new
+    @rules = GameRules.new
     @io = input_output
   end
 
   def setup
-    create_players
     create_board
+    create_players
+    setup_rules
 
     settings
   end
 
   private
   def settings
-    { player_one: @player_one, player_two: @player_two, board: @board, rules: rules }
-  end
-
-  def rules
-    GameRules.new(@player_one, @player_two, @board)
+    { player_one: @player_one, player_two: @player_two, board: @board, rules: @rules }
   end
 
   def create_players
@@ -37,6 +37,10 @@ class Configurations
     # need to make sure challenger does not choose the same gamepiece as human
 
     shuffle_order(challenger, human)
+  end
+
+  def setup_rules
+    @rules.setup(@player_one, @player_two, @board)
   end
 
   def create_human
@@ -60,9 +64,10 @@ class Configurations
 
     if user_input.upcase == HUMAN_OPTION
       create_human
-    elsif user_input.upcase == AI_OPTION
-      # possibly ask 'easy' or 'hard'
+    elsif user_input.upcase == EASY_AI_OPTION
       create_easy_ai
+    elsif user_input.upcase == HARD_AI_OPTION
+      create_hard_ai
     else
       @io.out(Messages::INVALID_RESPONSE)
       determine_challenger
@@ -70,7 +75,11 @@ class Configurations
   end
 
   def create_easy_ai
-    AI.new('X')
+    EasyAI.new('X', @board)
+  end
+
+  def create_hard_ai
+    HardAI.new('X', @board, @rules)
   end
 
   def create_board
