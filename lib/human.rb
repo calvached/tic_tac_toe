@@ -7,14 +7,7 @@ class Human
     @io = input_output
   end
 
-  def make_move(board)
-    response = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
-
-    while response.to_i > board.gameboard.size
-      @io.out(Messages::INVALID_RESPONSE)
-      response = @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
-    end
-
-    response
+  def make_move
+    @io.prompt(Messages::MAKE_MOVE, 'regex', /\d/)
   end
 end
