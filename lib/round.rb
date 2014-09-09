@@ -44,7 +44,7 @@ class Round
   end
 
   def play
-    until board.game_over?
+    until rules.game_over?
       @io.out(Messages.print_header(current_player))
       print_board
 
@@ -54,11 +54,11 @@ class Round
     end
 
     print_board
-    round_outcome
+    outcome
   end
 
   def player_move(board)
-    current_player.make_move(board)
+    current_player.make_move(board, self)
   end
 
   def game_piece
@@ -94,12 +94,16 @@ class Round
     @game_settings[:board]
   end
 
-  def current_player
-    board.occupied_cells.even? ? player_one : player_two
+  def rules
+    @game_settings[:rules]
   end
 
-  def round_outcome
-    if board.draw?
+  def current_player
+    board.even_occupied_cells? ? player_one : player_two
+  end
+
+  def outcome
+    if rules.draw?
       @io.out(Messages::DRAW)
     else
       @io.out(Messages.print_round_win(declared_winner))
@@ -107,6 +111,6 @@ class Round
   end
 
   def declared_winner
-    board.occupied_cells.odd? ? player_one : player_two
+    board.odd_occupied_cells? ? player_one : player_two
   end
 end
