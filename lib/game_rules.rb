@@ -15,8 +15,8 @@ class GameRules
     @board.is_full? && !winner?
   end
 
-  def current_player
-    @board.even_occupied_cells? ? @player_one : @player_two
+  def player_piece
+    current_player.game_piece
   end
 
   def winner?
@@ -33,5 +33,9 @@ class GameRules
 
   def declared_winner
     @board.odd_occupied_cells? ? @player_one : @player_two
+  end
+
+  def current_player
+    @board.even_occupied_cells? ? @player_one : @player_two
   end
 end
