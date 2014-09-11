@@ -38,6 +38,38 @@ describe Board do
     end
   end
 
+  describe '#next_available_cell' do
+    it 'returns the next empty cell' do
+      board.gameboard = {
+          '1' => 'X', '2' => 'O', '3' => ' ',
+          '4' => 'X', '5' => ' ', '6' => ' ',
+          '7' => ' ', '8' => ' ', '9' => 'O'
+        }
+
+      expect(board.next_available_cell).to eq('3')
+    end
+
+    it 'returns the next empty cell' do
+      board.gameboard = {
+          '1' => 'X', '2' => 'O', '3' => 'O',
+          '4' => 'X', '5' => 'O', '6' => 'X',
+          '7' => 'O', '8' => 'X', '9' => ' '
+        }
+
+      expect(board.next_available_cell).to eq('9')
+    end
+
+    xit 'in progress' do
+      board.gameboard = {
+          '1' => 'X', '2' => 'O', '3' => 'X',
+          '4' => 'X', '5' => 'O', '6' => 'X',
+          '7' => 'O', '8' => 'X', '9' => 'O'
+        }
+
+      expect(board.next_available_cell).to eq('')
+    end
+  end
+
   describe '#dimensions' do
     it 'returns the board dimensions' do
       expect(board.dimensions).to eq(3.0)
