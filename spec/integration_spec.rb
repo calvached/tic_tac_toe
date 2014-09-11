@@ -33,7 +33,7 @@ describe Round do
 
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
-    round.io.inputs = ['2', '5', '3']
+    round.io.inputs = ['2', '5']
     round.start_game
 
     expect(round.io.received_messages).to include(Messages.print_round_win(human))
@@ -49,7 +49,7 @@ describe Round do
 
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
-    round.io.inputs = ['1', '2', '5', '3']
+    round.io.inputs = ['1', '2', '5']
     round.start_game
 
     expect(round.io.received_messages).to include(Messages::HOW_TO_PLAY)
@@ -65,7 +65,7 @@ describe Round do
 
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
-    round.io.inputs = ['hey', '2', '5', '3']
+    round.io.inputs = ['hey', '2', '5']
     round.start_game
 
     expect(round.io.received_messages).to include(Messages::INVALID_OPTION)
@@ -81,7 +81,7 @@ describe Round do
 
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
-    round.io.inputs = ['1', '2', '6', '3']
+    round.io.inputs = ['1', '2', '6']
     round.start_game
 
     expect(round.io.received_messages).to include(Messages::DRAW)
@@ -97,7 +97,7 @@ describe Round do
 
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
-    round.io.inputs = ['2', '99', '6', '3']
+    round.io.inputs = ['2', '99', '6']
     round.start_game
 
     expect(round.io.received_messages).to include(Messages::INVALID_RESPONSE)
@@ -113,7 +113,7 @@ describe Round do
 
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
-    round.io.inputs = ['2', '1', '6', '3']
+    round.io.inputs = ['2', '1', '6']
     round.start_game
 
     expect(round.io.received_messages).to include(Messages::INVALID_MOVE)
