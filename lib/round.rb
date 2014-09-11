@@ -31,13 +31,14 @@ class Round
 
     if user_input == '3'
       menu['3'].call
+    elsif user_input == '2'
+      menu['2'].call
     elsif menu[user_input]
       menu[user_input].call
       menu['options'].call
       player_selections
     else
       @io.out(Messages::INVALID_OPTION)
-      menu['options'].call
       player_selections
     end
 
