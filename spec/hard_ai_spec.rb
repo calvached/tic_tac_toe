@@ -18,61 +18,72 @@ describe HardAI do
 
   describe '#make_move' do
     context 'player one' do
-      it 'returns a move that blocks the other player from winning' do
+      it 'makes the best move for a win' do
         hard_ai.board.gameboard = {
-          '1' => 'O', '2' => 'X', '3' => 'X',
+          '1' => ' ', '2' => 'X', '3' => 'O',
+          '4' => 'O', '5' => ' ', '6' => ' ',
+          '7' => 'X', '8' => ' ', '9' => ' '
+        }
+        rules.setup(hard_ai, human, board)
+
+        expect(hard_ai.make_move).to eq('8')
+      end
+
+      it 'chooses a win over a block' do
+        hard_ai.board.gameboard = {
+          '1' => 'O', '2' => 'X', '3' => ' ',
+          '4' => 'O', '5' => 'X', '6' => 'O',
+          '7' => ' ', '8' => ' ', '9' => 'X'
+        }
+        rules.setup(hard_ai, human, board)
+
+        expect(hard_ai.make_move).to eq('8')
+      end
+
+      it 'chooses the winning move' do
+        hard_ai.board.gameboard = {
+          '1' => 'O', '2' => 'O', '3' => 'X',
+          '4' => ' ', '5' => 'X', '6' => ' ',
+          '7' => ' ', '8' => ' ', '9' => ' '
+        }
+        rules.setup(hard_ai, human, board)
+
+        expect(hard_ai.make_move).to eq('7')
+      end
+
+      it 'blocks the opponent from winning' do
+        hard_ai.board.gameboard = {
+          '1' => 'X', '2' => 'X', '3' => 'O',
           '4' => ' ', '5' => 'O', '6' => ' ',
           '7' => ' ', '8' => ' ', '9' => ' '
         }
         rules.setup(hard_ai, human, board)
 
-        expect(hard_ai.make_move).to eq('9')
-      end
-
-      xit 'chooses the best move' do
-        hard_ai.board.gameboard = {
-          '1' => 'O', '2' => 'O', '3' => 'X',
-          '4' => ' ', '5' => 'X', '6' => ' ',
-          '7' => ' ', '8' => ' ', '9' => ' '
-        }
-        rules.setup(hard_ai, human, board)
-
-        expect(hard_ai.make_move).to eq('6')
-      end
-
-      xit '' do
-        hard_ai.board.gameboard = {
-          '1' => 'X', '2' => 'X', '3' => 'O',
-          '4' => 'O', '5' => 'O', '6' => ' ',
-          '7' => 'X', '8' => ' ', '9' => ' '
-        }
-        rules.setup(hard_ai, human, board)
-
-        expect(hard_ai.make_move).to eq('6')
+        expect(hard_ai.make_move).to eq('7')
       end
     end
 
     context 'player two' do
-      xit 'returns a move that blocks the other player from winning' do
+      it 'returns a move that blocks the other player from winning' do
         hard_ai.board.gameboard = {
-          '1' => 'O', '2' => 'X', '3' => 'X',
-          '4' => 'O', '5' => ' ', '6' => ' ',
-          '7' => ' ', '8' => ' ', '9' => ' '
+          '1' => 'O', '2' => 'O', '3' => ' ',
+          '4' => 'X', '5' => 'X', '6' => 'O',
+          '7' => ' ', '8' => 'O', '9' => 'X'
+        }
+        rules.setup(human, hard_ai, board)
+
+        expect(hard_ai.make_move).to eq('3')
+      end
+
+      it 'chooses a win over a block' do
+        hard_ai.board.gameboard = {
+          '1' => 'O', '2' => 'O', '3' => ' ',
+          '4' => 'O', '5' => 'X', '6' => 'O',
+          '7' => ' ', '8' => 'X', '9' => 'X'
         }
         rules.setup(human, hard_ai, board)
 
         expect(hard_ai.make_move).to eq('7')
-      end
-
-      xit 'chooses the best move' do
-        hard_ai.board.gameboard = {
-          '1' => 'O', '2' => 'O', '3' => 'X',
-          '4' => ' ', '5' => 'X', '6' => ' ',
-          '7' => ' ', '8' => ' ', '9' => ' '
-        }
-        rules.setup(human, hard_ai, board)
-
-        expect(hard_ai.make_move).to eq('6')
       end
     end
   end
