@@ -1,5 +1,5 @@
 class GameRules
-  attr_reader :board
+  attr_reader :board, :player_one, :player_two
 
   def setup(player_one, player_two, board)
     @player_one = player_one
@@ -25,6 +25,10 @@ class GameRules
     end
 
     false
+  end
+
+  def winning_piece
+    declared_winner.game_piece
   end
 
   def valid_entry?(move)
