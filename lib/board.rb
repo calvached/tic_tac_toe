@@ -21,12 +21,6 @@ class Board
     occupied_cells.odd?
   end
 
-  def next_available_cell
-    @gameboard.each do |key, value|
-      return key if value == ' '
-    end
-  end
-
   def available_cells
     @gameboard.select { |key, value| value == ' '}.keys
   end
