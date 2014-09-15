@@ -5,7 +5,7 @@ class HardAI
     @game_piece = game_piece
     @board = board
     @rules = rules
-    @name = 'GladOS'
+    @name = 'GLaDOS'
   end
 
   def make_move(scores = {}, depth = 0)
@@ -17,11 +17,11 @@ class HardAI
       @board.reset(cell)
     end
 
-     depth == 0 ? best_max_move_from(scores) : best_score(depth, scores)
+     depth == 0 ? best_move_from(scores) : best_score(depth, scores)
   end
 
   def best_score(depth, scores)
-    ai_turn?(depth) ? best_max_score_from(scores) : best_min_score_from(scores)
+    ai_turn?(depth) ? max_score_from(scores) : min_score_from(scores)
   end
 
   def ai_turn?(depth)
@@ -46,15 +46,15 @@ class HardAI
     @rules.winner?
   end
 
-  def best_max_score_from(scores)
+  def max_score_from(scores)
     scores.max_by {|key, value| value}.last
   end
 
-  def best_min_score_from(scores)
+  def min_score_from(scores)
     scores.min_by {|key, value| value}.last
   end
 
-  def best_max_move_from(scores)
+  def best_move_from(scores)
     scores.max_by {|key, value| value}.first
   end
 end
