@@ -101,14 +101,6 @@ class Round
     rows
   end
 
-  def player_one
-    @game_settings[:player_one]
-  end
-
-  def player_two
-    @game_settings[:player_two]
-  end
-
   def board
     @game_settings[:board]
   end

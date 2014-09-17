@@ -20,12 +20,6 @@ describe Board do
     end
   end
 
-  describe '#is_full?' do
-  end
-
-  describe '#winner?' do
-  end
-
   describe '#available_cells' do
     it 'returns the keys to all available cells' do
       board.gameboard = {
