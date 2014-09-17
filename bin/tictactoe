@@ -6,4 +6,4 @@ require 'input_output'
 require 'configurations'
 
 round = Round.new(Configurations.new(MyIO.new), MyIO.new)
-round.start_game
+round.start

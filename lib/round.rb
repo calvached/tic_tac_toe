@@ -9,7 +9,7 @@ class Round
     @configurations = configurations
   end
 
-  def start_game
+  def start
     @io.out(Messages::WELCOME)
     @game_settings = @configurations.setup
 
