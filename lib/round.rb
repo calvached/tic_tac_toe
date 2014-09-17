@@ -80,8 +80,12 @@ class Round
   end
 
   def print_board
-    @io.out(Messages.print_header(current_player))
+    print_header
     @io.out(formatted_rows.join(horizontal_line) + "\n")
+  end
+
+  def print_header
+    @io.out(Messages.print_header(current_player)) unless rules.game_over?
   end
 
   def horizontal_line
