@@ -33,8 +33,7 @@ class Configurations
 
   def create_players
     human = create_human
-    challenger = determine_challenger
-    # need to make sure challenger does not choose the same gamepiece as human
+    challenger = determine_challenger(human.game_piece)
 
     shuffle_order(challenger, human)
   end
@@ -43,11 +42,26 @@ class Configurations
     @rules.setup(@player_one, @player_two, @board)
   end
 
-  def create_human
-    name = @io.prompt(Messages::ASK_FOR_NAME, 'regex', word_char_only)
-    game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', special_char_only)
+  def create_human(opponent_piece = ' ')
+    name = get_name
+    game_piece = get_game_piece(opponent_piece)
 
     Human.new(game_piece, name, @io)
+  end
+
+  def get_name
+    @io.prompt(Messages::ASK_FOR_NAME, 'regex', word_char_only)
+  end
+
+  def get_game_piece(opponent_piece)
+    game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', special_char_only)
+
+    until game_piece != opponent_piece
+      @io.out(Messages::TAKEN_GAME_PIECE)
+      game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', special_char_only)
+    end
+
+    game_piece
   end
 
   def special_char_only
@@ -58,19 +72,19 @@ class Configurations
     /\w/
   end
 
-  def determine_challenger
+  def determine_challenger(opponent_piece)
     @io.out(Messages::ASK_FOR_GAME_TYPE)
     user_input = @io.input
 
     if user_input.upcase == HUMAN_OPTION
-      create_human
+      create_human(opponent_piece)
     elsif user_input.upcase == EASY_AI_OPTION
       create_easy_ai
     elsif user_input.upcase == HARD_AI_OPTION
       create_hard_ai
     else
       @io.out(Messages::INVALID_RESPONSE)
-      determine_challenger
+      determine_challenger(opponent_piece)
     end
   end
 

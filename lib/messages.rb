@@ -45,6 +45,8 @@ class Messages
 
   ASK_FOR_GAMEPIECE = "Please choose a game piece from the following: 'O, $, %, &, *, @, #, ?'"
 
+  TAKEN_GAME_PIECE = 'That piece is already taken, please choose again.'
+
   DRAW = "DRAW!"
 
   def self.prettify_row(row)

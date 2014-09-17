@@ -42,11 +42,18 @@ describe Configurations do
     expect(config.io.received_messages).to include(Messages::INVALID_RESPONSE)
   end
 
-  it "creates an AI player if 'a' is selected" do
+  it "creates an easy AI player if 'ea' is selected" do
     config.io.inputs = ['3', 'diana', '4', 'O', 'ea']
     game_settings = config.setup
 
     expect(game_settings.values).to include(EasyAI)
+  end
+
+  it "creates a hard AI player if 'ha' is selected" do
+    config.io.inputs = ['3', 'diana', '4', 'O', 'ha']
+    game_settings = config.setup
+
+    expect(game_settings.values).to include(HardAI)
   end
 
   it "creates a Human player if 'h' is selected" do
@@ -60,5 +67,12 @@ describe Configurations do
     expect(game_settings[:player_two]).to be_an_instance_of(Human)
     expect(game_settings[:player_two].name).to be_a_kind_of(String)
     expect(game_settings[:player_two].game_piece).to be_a_kind_of(String)
+  end
+
+  it 'does not allow players to have the same game pieces' do
+    config.io.inputs = ['3', 'diana', 'O', 'h', 'ruby', 'O', '#']
+    game_settings = config.setup
+
+    expect(config.io.received_messages).to include(Messages::TAKEN_GAME_PIECE)
   end
 end
