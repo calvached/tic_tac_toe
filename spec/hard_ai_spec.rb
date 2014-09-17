@@ -18,7 +18,7 @@ describe HardAI do
 
   describe '#make_move' do
     context 'player one' do
-      it 'makes the best move for a win' do
+      it 'makes the best move for a higher chance of winning' do
         hard_ai.board.gameboard = {
           '1' => ' ', '2' => 'X', '3' => 'O',
           '4' => 'O', '5' => ' ', '6' => ' ',
@@ -84,6 +84,28 @@ describe HardAI do
         rules.setup(human, hard_ai, board)
 
         expect(hard_ai.make_move).to eq('7')
+      end
+
+      it 'chooses the cell in the middle as the best move' do
+        hard_ai.board.gameboard = {
+          '1' => ' ', '2' => ' ', '3' => 'O',
+          '4' => ' ', '5' => ' ', '6' => ' ',
+          '7' => ' ', '8' => ' ', '9' => ' '
+        }
+        rules.setup(human, hard_ai, board)
+
+        expect(hard_ai.make_move).to eq('5')
+      end
+
+      it 'chooses a space in one of the corners' do
+        hard_ai.board.gameboard = {
+          '1' => ' ', '2' => ' ', '3' => ' ',
+          '4' => ' ', '5' => 'O', '6' => ' ',
+          '7' => ' ', '8' => ' ', '9' => ' '
+        }
+        rules.setup(human, hard_ai, board)
+
+        expect(hard_ai.make_move).to eq('1')
       end
     end
   end
