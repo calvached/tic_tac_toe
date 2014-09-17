@@ -64,33 +64,44 @@ describe HardAI do
     end
 
     context 'player two' do
-      it 'returns a move that blocks the other player from winning' do
-        hard_ai.board.gameboard = {
-          '1' => 'O', '2' => 'O', '3' => ' ',
-          '4' => 'X', '5' => 'X', '6' => 'O',
-          '7' => ' ', '8' => 'O', '9' => 'X'
-        }
-        rules.setup(human, hard_ai, board)
-
-        expect(hard_ai.make_move).to eq('3')
-      end
-
-      it 'chooses a win over a block' do
-        hard_ai.board.gameboard = {
-          '1' => 'O', '2' => 'O', '3' => ' ',
-          '4' => 'O', '5' => 'X', '6' => 'O',
-          '7' => ' ', '8' => 'X', '9' => 'X'
-        }
-        rules.setup(human, hard_ai, board)
-
-        expect(hard_ai.make_move).to eq('7')
-      end
-
-      it 'chooses the cell in the middle as the best move' do
+      it 'chooses the cell in the middle if top right cell occupied' do
         hard_ai.board.gameboard = {
           '1' => ' ', '2' => ' ', '3' => 'O',
           '4' => ' ', '5' => ' ', '6' => ' ',
           '7' => ' ', '8' => ' ', '9' => ' '
+        }
+        rules.setup(human, hard_ai, board)
+
+        expect(hard_ai.make_move).to eq('5')
+      end
+
+      it 'chooses the cell in the middle if bottom left cell occupied' do
+        hard_ai.board.gameboard = {
+          '1' => ' ', '2' => ' ', '3' => ' ',
+          '4' => ' ', '5' => ' ', '6' => ' ',
+          '7' => 'O', '8' => ' ', '9' => ' '
+        }
+        rules.setup(human, hard_ai, board)
+
+        expect(hard_ai.make_move).to eq('5')
+      end
+
+      it 'chooses the cell in the middle if top left cell occupied' do
+        hard_ai.board.gameboard = {
+          '1' => 'O', '2' => ' ', '3' => ' ',
+          '4' => ' ', '5' => ' ', '6' => ' ',
+          '7' => ' ', '8' => ' ', '9' => ' '
+        }
+        rules.setup(human, hard_ai, board)
+
+        expect(hard_ai.make_move).to eq('5')
+      end
+
+      it 'chooses the cell in the middle if bottom right cell occupied' do
+        hard_ai.board.gameboard = {
+          '1' => ' ', '2' => ' ', '3' => ' ',
+          '4' => ' ', '5' => ' ', '6' => ' ',
+          '7' => ' ', '8' => ' ', '9' => 'O'
         }
         rules.setup(human, hard_ai, board)
 
