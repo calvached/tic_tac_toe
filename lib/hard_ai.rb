@@ -20,6 +20,7 @@ class HardAI
     depth == 0 ? best_move_from(scores) : best_score(depth, scores)
   end
 
+  private
   def reached_limit(depth)
     depth == @board.dimensions * 2
   end

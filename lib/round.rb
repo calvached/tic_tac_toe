@@ -17,6 +17,7 @@ class Round
     player_selections
   end
 
+  private
   def menu
     {
       '1' => Proc.new{@io.out(Messages::HOW_TO_PLAY)},
