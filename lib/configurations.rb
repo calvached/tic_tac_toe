@@ -9,8 +9,9 @@ class Configurations
   attr_reader :io
 
   HUMAN_OPTION = 'H'
-  EASY_AI_OPTION = 'EA'
-  HARD_AI_OPTION = 'HA'
+  EASY_AI_OPTION = 'EC'
+  HARD_AI_OPTION = 'HC'
+  GAME_PIECE_CHOICES = ['X', 'O', '$', '%', '&', '*', '@', '#', '?']
 
   def initialize(input_output)
     @board = Board.new
@@ -32,17 +33,41 @@ class Configurations
   end
 
   def create_players
-    human = create_human
-    challenger = determine_challenger(human.game_piece)
+    challenger_1 = determine_challenger
+    challenger_2 = determine_challenger(challenger_1.game_piece)
 
-    shuffle_order(challenger, human)
+    shuffle_order(challenger_1, challenger_2)
   end
 
   def setup_rules
     @rules.setup(@player_one, @player_two, @board)
   end
 
-  def create_human(opponent_piece = ' ')
+  def special_char_only
+    /[XO$%&*@#?]/
+  end
+
+  def word_char_only
+    /\w/
+  end
+
+  def determine_challenger(opponent_piece = ' ')
+    @io.out(Messages::ASK_FOR_GAME_TYPE)
+    user_input = @io.input
+
+    if user_input.upcase == HUMAN_OPTION
+      create_human(opponent_piece)
+    elsif user_input.upcase == EASY_AI_OPTION
+      create_easy_ai(opponent_piece)
+    elsif user_input.upcase == HARD_AI_OPTION
+      create_hard_ai(opponent_piece)
+    else
+      @io.out(Messages::INVALID_RESPONSE)
+      determine_challenger(opponent_piece)
+    end
+  end
+
+  def create_human(opponent_piece)
     name = get_name
     game_piece = get_game_piece(opponent_piece)
 
@@ -56,7 +81,7 @@ class Configurations
   def get_game_piece(opponent_piece)
     game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', special_char_only)
 
-    until game_piece != opponent_piece
+    while game_piece == opponent_piece
       @io.out(Messages::TAKEN_GAME_PIECE)
       game_piece = @io.prompt(Messages::ASK_FOR_GAMEPIECE, 'regex', special_char_only)
     end
@@ -64,36 +89,28 @@ class Configurations
     game_piece
   end
 
-  def special_char_only
-    /[O$%&*@#?]/
+  def create_easy_ai(opponent_piece)
+    piece = assign_game_piece(opponent_piece)
+    EasyAI.new(piece, @board)
   end
 
-  def word_char_only
-    /\w/
+  def create_hard_ai(opponent_piece)
+    piece = assign_game_piece(opponent_piece)
+    HardAI.new(piece, @board, @rules)
   end
 
-  def determine_challenger(opponent_piece)
-    @io.out(Messages::ASK_FOR_GAME_TYPE)
-    user_input = @io.input
+  def assign_game_piece(opponent_piece)
+     piece = select_piece
 
-    if user_input.upcase == HUMAN_OPTION
-      create_human(opponent_piece)
-    elsif user_input.upcase == EASY_AI_OPTION
-      create_easy_ai
-    elsif user_input.upcase == HARD_AI_OPTION
-      create_hard_ai
-    else
-      @io.out(Messages::INVALID_RESPONSE)
-      determine_challenger(opponent_piece)
-    end
+     while piece == opponent_piece
+       piece = select_piece
+     end
+
+     piece
   end
 
-  def create_easy_ai
-    EasyAI.new('X', @board)
-  end
-
-  def create_hard_ai
-    HardAI.new('X', @board, @rules)
+  def select_piece
+    GAME_PIECE_CHOICES.shift
   end
 
   def create_board

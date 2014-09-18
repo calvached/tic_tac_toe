@@ -9,7 +9,7 @@ describe Configurations do
   let(:config) { Configurations.new(mock) }
 
   it 'creates game settings' do
-    config.io.inputs = ['3', 'diana', 'O', 'ea']
+    config.io.inputs = ['3', 'h', 'diana', 'O', 'ec']
     #allow(config).to receive(:shuffle_order).with(ai, human)
 
     # mock out the shuffling so that I know exactly what is being returned
@@ -28,7 +28,7 @@ describe Configurations do
   end
 
   it "won't accept a letter for board size" do
-    config.io.inputs = ['b', '3', 'diana', 'O', 'ea']
+    config.io.inputs = ['b', '3', 'h', 'diana', 'O', 'ec']
 
     game_settings = config.setup
 
@@ -36,28 +36,28 @@ describe Configurations do
   end
 
   it "will only accept special characters as game pieces" do
-    config.io.inputs = ['3', 'diana', '4', 'O', 'ea']
+    config.io.inputs = ['3', 'h', 'diana', '4', 'O', 'ec']
     game_settings = config.setup
 
     expect(config.io.received_messages).to include(Messages::INVALID_RESPONSE)
   end
 
   it "creates an easy AI player if 'ea' is selected" do
-    config.io.inputs = ['3', 'diana', '4', 'O', 'ea']
+    config.io.inputs = ['3', 'h', 'diana', '4', 'O', 'ec']
     game_settings = config.setup
 
     expect(game_settings.values).to include(EasyAI)
   end
 
   it "creates a hard AI player if 'ha' is selected" do
-    config.io.inputs = ['3', 'diana', '4', 'O', 'ha']
+    config.io.inputs = ['3', 'h', 'diana', '4', 'O', 'hc']
     game_settings = config.setup
 
     expect(game_settings.values).to include(HardAI)
   end
 
   it "creates a Human player if 'h' is selected" do
-    config.io.inputs = ['3', 'diana', 'O', 'h', 'ruby', '#']
+    config.io.inputs = ['3', 'h', 'diana', 'O', 'h', 'ruby', '#']
     game_settings = config.setup
 
     expect(game_settings[:player_one]).to be_an_instance_of(Human)
@@ -69,10 +69,24 @@ describe Configurations do
     expect(game_settings[:player_two].game_piece).to be_a_kind_of(String)
   end
 
-  it 'does not allow players to have the same game pieces' do
-    config.io.inputs = ['3', 'diana', 'O', 'h', 'ruby', 'O', '#']
+  it 'does not allow human players to have the same game pieces' do
+    config.io.inputs = ['3', 'h', 'diana', 'O', 'h', 'ruby', 'O', '#']
     game_settings = config.setup
 
     expect(config.io.received_messages).to include(Messages::TAKEN_GAME_PIECE)
+  end
+
+  it 'does not allow AI player to have the same game piece as the human player' do
+    config.io.inputs = ['3', 'h', 'diana', 'X', 'ec']
+    game_settings = config.setup
+
+    expect(game_settings[:player_one].game_piece).to_not eq(game_settings[:player_two].game_piece)
+  end
+
+  it 'does not allow AI players to have the same game piece' do
+    config.io.inputs = ['3', 'hc', 'ec']
+    game_settings = config.setup
+
+    expect(game_settings[:player_one].game_piece).to_not eq(game_settings[:player_two].game_piece)
   end
 end
