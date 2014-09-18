@@ -20,7 +20,7 @@ class GameRules
   end
 
   def winner?
-    @board.possible_combinations.each do |combo_set|
+    possible_combinations.each do |combo_set|
       return true if combo_set.uniq.length == 1 && !combo_set.include?(' ')
     end
 
@@ -41,5 +41,10 @@ class GameRules
 
   def current_player
     @board.even_occupied_cells? ? @player_one : @player_two
+  end
+
+  private
+  def possible_combinations
+    @board.get_rows + @board.get_columns + @board.get_diagonals
   end
 end
