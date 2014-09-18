@@ -39,11 +39,11 @@ class Messages
 
   INVALID_MOVE= "That space is already taken. Please choose again."
 
-  ASK_FOR_GAME_TYPE = "Enter 'H' for Human, 'EA' for Easy Challenger and 'HA' for Hard Challenger."
+  ASK_FOR_GAME_TYPE = "Please select challenger, enter 'H' for Human, 'EC' for Easy Challenger and 'HC' for Hard Challenger."
 
   ASK_FOR_NAME = 'What is your name? (Use only letters and numbers)'
 
-  ASK_FOR_GAMEPIECE = "Please choose a game piece from the following: 'O, $, %, &, *, @, #, ?'"
+  ASK_FOR_GAMEPIECE = "Please choose a game piece from the following: 'X, O, $, %, &, *, @, #, ?'"
 
   TAKEN_GAME_PIECE = 'That piece is already taken, please choose again.'
 
