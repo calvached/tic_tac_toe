@@ -34,8 +34,7 @@ describe Round do
         '1' => 'X', '2' => 'O', '3' => ' ',
         '4' => 'O', '5' => ' ', '6' => ' ',
         '7' => 'X', '8' => 'O', '9' => 'X'
-      }
-
+    }
     allow(round.configurations).to receive(:setup).and_return(game_settings)
 
     round.io.inputs = ['3']

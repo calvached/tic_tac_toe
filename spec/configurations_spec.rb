@@ -10,11 +10,18 @@ describe Configurations do
   let(:mock) { MockIO.new }
   let(:board) { Board.new }
   let(:rules) { GameRules.new }
-  let(:config) { Configurations.new(board, rules, mock) }
+  let(:config) { Configurations.new(mock) }
+
+  it 'test' do
+    hard_ai = spy('HardAI')
+    config.create_hard_ai('X')
+    expect(hard_ai).to have_received(:new)
+    # expect spy got called if hc entered
+  end
 
   it 'creates game settings' do
     config.io.inputs = ['3', 'h', 'diana', 'O', 'ec']
-    #allow(config).to receive(:shuffle_order).with(ai, human)
+    #allow(config).to receive(:shuffle_order).with(ai, human).and_return(HardAI.new(), Human.new())
 
     # mock out the shuffling so that I know exactly what is being returned
     # player_one.name == 'Diana'

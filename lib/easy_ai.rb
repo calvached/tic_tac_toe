@@ -1,5 +1,5 @@
 class EasyAI
-  attr_reader :game_piece, :name
+  attr_reader :game_piece, :name, :board
 
   def initialize(game_piece, board)
     @game_piece = game_piece

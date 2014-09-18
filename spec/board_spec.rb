@@ -10,6 +10,7 @@ describe Board do
   before(:example) do
     board.create(3)
   end
+  # Add more tests for public methods
 
   describe '#place_game_piece' do
     it 'fills space in available positions only' do

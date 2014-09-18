@@ -19,11 +19,14 @@ describe HardAI do
   describe '#make_move' do
     context 'player one' do
       it 'makes the best move for a higher chance of winning' do
-        hard_ai.board.gameboard = {
-          '1' => ' ', '2' => 'X', '3' => 'O',
-          '4' => 'O', '5' => ' ', '6' => ' ',
-          '7' => 'X', '8' => ' ', '9' => ' '
-        }
+        allow(hard_ai.board).to receive(:available_cells).and_return(
+          ['1', '5', '6', '8', '9'])
+
+        #hard_ai.board.gameboard = {
+        #  '1' => ' ', '2' => 'X', '3' => 'O',
+        #  '4' => 'O', '5' => ' ', '6' => ' ',
+        #  '7' => 'X', '8' => ' ', '9' => ' '
+        #}
         rules.setup(hard_ai, human, board)
 
         expect(hard_ai.make_move).to eq('8')

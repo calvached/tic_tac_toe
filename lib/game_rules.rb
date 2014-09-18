@@ -1,14 +1,7 @@
 class GameRules
-  attr_reader :board, :player_one, :player_two
 
-  def setup(player_one, player_two, board)
-    @player_one = player_one
-    @player_two = player_two
-    @board = board
-  end
-
-  def game_over?
-    @board.is_full? || winner?
+  def self.game_over?(board)
+    board.is_full? || winner?
   end
 
   def draw?
@@ -35,12 +28,12 @@ class GameRules
     move.to_i <= @board.gameboard.size ? true : false
   end
 
-  def declared_winner
-    @board.even_occupied_cells? ? @player_two : @player_one
+  def declared_winner(board, player_one, player_two)
+    board.even_occupied_cells? ? player_two : player_one
   end
 
-  def current_player
-    @board.even_occupied_cells? ? @player_one : @player_two
+  def current_player(board, player_one, player_two)
+    board.even_occupied_cells? ? player_one : player_two
   end
 
   private

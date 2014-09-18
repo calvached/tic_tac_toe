@@ -2,53 +2,47 @@ require 'messages'
 require 'human'
 require 'easy_ai'
 require 'hard_ai'
+require 'board'
+require 'game_rules'
 
 class Configurations
-  attr_reader :io
+  attr_reader :io, :settings
 
   HUMAN_OPTION = 'H'
   EASY_AI_OPTION = 'EC'
   HARD_AI_OPTION = 'HC'
   GAME_PIECE_CHOICES = ['X', 'O', '$', '%', '&', '*', '@', '#', '?']
 
-  def initialize(board, rules, input_output)
-    @board = board
-    @rules = rules
+  def initialize(input_output)
     @io = input_output
+    @settings = {}
   end
 
   def setup
     create_board
     create_players
-    setup_rules
-
-    settings
+    create_rules
   end
 
   private
-  def settings
-    { player_one: @player_one, player_two: @player_two, board: @board, rules: @rules }
+  def create_board
+    board_size = @io.prompt(Messages::ASK_FOR_BOARD_SIZE, 'regex', digit?)
+
+    @settings[:board] = Board.new.create(board_size)
+  end
+
+  def create_rules
+    @settings[:rules] = GameRules
   end
 
   def create_players
     challenger_1 = determine_challenger
     challenger_2 = determine_challenger(challenger_1.game_piece)
 
-    shuffle_order(challenger_1, challenger_2)
+    @settings[:player_one], @settings[:player_two] = shuffle_order(challenger_1, challenger_2)
   end
 
-  def setup_rules
-    @rules.setup(@player_one, @player_two, @board)
-  end
-
-  def special_char_only
-    /[XO$%&*@#?]/
-  end
-
-  def word_char_only
-    /\w/
-  end
-
+  # create menu
   def determine_challenger(opponent_piece = ' ')
     @io.out(Messages::ASK_FOR_GAME_TYPE)
     user_input = @io.input
@@ -89,14 +83,16 @@ class Configurations
 
   def create_easy_ai(opponent_piece)
     piece = assign_game_piece(opponent_piece)
-    EasyAI.new(piece, @board)
+    EasyAI.new(piece, @settings[:board])
   end
 
+  public
   def create_hard_ai(opponent_piece)
     piece = assign_game_piece(opponent_piece)
-    HardAI.new(piece, @board, @rules)
+    HardAI.new(piece, @settings[:board], GameRules)
   end
 
+  private
   def assign_game_piece(opponent_piece)
      piece = select_piece
 
@@ -111,27 +107,20 @@ class Configurations
     GAME_PIECE_CHOICES.shift
   end
 
-  def create_board
-    @io.out(Messages::ASK_FOR_BOARD_SIZE)
-    get_board_size
-  end
-
   def shuffle_order(contestant_1, contestant_2)
-    @player_one, @player_two = [contestant_1, contestant_2].shuffle
-  end
-
-  def get_board_size
-    board_size = @io.input
-
-    if board_size =~ digit?
-      @board.create(board_size.to_i)
-    else
-      @io.out(Messages::INVALID_RESPONSE)
-      get_board_size
-    end
+    [contestant_1, contestant_2].shuffle
   end
 
   def digit?
     /\d/
+  end
+
+  # maybe create a validation class
+  def special_char_only
+    /[XO$%&*@#?]/
+  end
+
+  def word_char_only
+    /\w/
   end
 end
