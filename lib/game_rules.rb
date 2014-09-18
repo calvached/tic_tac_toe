@@ -36,7 +36,7 @@ class GameRules
   end
 
   def declared_winner
-    @board.odd_occupied_cells? ? @player_one : @player_two
+    @board.even_occupied_cells? ? @player_two : @player_one
   end
 
   def current_player
