@@ -4,6 +4,9 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'round'
 require 'input_output'
 require 'configurations'
+require 'game_rules'
+require 'board'
 
-round = Round.new(Configurations.new(MyIO.new), MyIO.new)
+config = Configurations.new(Board.new, GameRules.new, MyIO.new)
+round = Round.new(config, MyIO.new)
 round.start
