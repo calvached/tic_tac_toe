@@ -29,23 +29,12 @@ class Board
     !@gameboard.values.any? { |cell| cell == ' ' }
   end
 
-  def possible_combinations
-    get_rows + get_columns + get_diagonals
-  end
-
   def dimensions
     Math.sqrt(@gameboard.length)
   end
 
   def reset(cell)
     @gameboard[cell] = ' '
-  end
-
-  private
-  def occupied_cells
-    @gameboard.reduce(0) do |counter, pair|
-      filled_cell?(pair) ? counter + 1 : counter
-    end
   end
 
   def get_rows
@@ -58,6 +47,13 @@ class Board
 
   def get_diagonals
     [left_diagonal, right_diagonal]
+  end
+
+  private
+  def occupied_cells
+    @gameboard.reduce(0) do |counter, pair|
+      filled_cell?(pair) ? counter + 1 : counter
+    end
   end
 
   def left_diagonal
