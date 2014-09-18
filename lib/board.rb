@@ -17,10 +17,6 @@ class Board
     occupied_cells.even?
   end
 
-  def odd_occupied_cells?
-    occupied_cells.odd?
-  end
-
   def available_cells
     @gameboard.select { |key, value| value == ' '}.keys
   end
