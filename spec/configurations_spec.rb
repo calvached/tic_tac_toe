@@ -3,10 +3,14 @@ SimpleCov.start
 
 require 'configurations'
 require 'input_output'
+require 'game_rules'
+require 'board'
 
 describe Configurations do
   let(:mock) { MockIO.new }
-  let(:config) { Configurations.new(mock) }
+  let(:board) { Board.new }
+  let(:rules) { GameRules.new }
+  let(:config) { Configurations.new(board, rules, mock) }
 
   it 'creates game settings' do
     config.io.inputs = ['3', 'h', 'diana', 'O', 'ec']

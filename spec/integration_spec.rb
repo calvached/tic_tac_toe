@@ -14,7 +14,7 @@ require 'game_rules'
 describe Round do
   let (:mock) { MockIO.new }
   let (:board) { Board.new }
-  let (:round) { Round.new(Configurations.new(mock), mock) }
+  let (:round) { Round.new(Configurations.new(board, rules, mock), mock) }
   let (:rules) { GameRules.new }
   let (:human) { Human.new('O', 'diana', mock) }
   let (:easy_ai) { EasyAI.new('X', board) }

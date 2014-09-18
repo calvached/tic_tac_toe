@@ -1,9 +1,7 @@
 require 'messages'
-require 'board'
 require 'human'
 require 'easy_ai'
 require 'hard_ai'
-require 'game_rules'
 
 class Configurations
   attr_reader :io
@@ -13,9 +11,9 @@ class Configurations
   HARD_AI_OPTION = 'HC'
   GAME_PIECE_CHOICES = ['X', 'O', '$', '%', '&', '*', '@', '#', '?']
 
-  def initialize(input_output)
-    @board = Board.new
-    @rules = GameRules.new
+  def initialize(board, rules, input_output)
+    @board = board
+    @rules = rules
     @io = input_output
   end
 
